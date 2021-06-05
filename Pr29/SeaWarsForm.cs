@@ -32,10 +32,12 @@ namespace Pr29
         int CountRotation;
         Point cell;
 
+        SeaField playerField;
+
         public SeaWarsForm()
         {
             InitializeComponent();
-            CreatePlayerMap();
+            //CreatePlayerMap();
             KeyUp += new KeyEventHandler(KeyRotate);
 
             PictureBox PictureBox_AnyShip = new PictureBox
@@ -47,6 +49,10 @@ namespace Pr29
                 BackgroundImageLayout = ImageLayout.Zoom
             };
             panel1.Controls.Add(PictureBox_AnyShip);
+
+            playerField = new SeaField(10, panel1, PlaceShip, Cell_mouseMove);
+            //playerField.CreateMap();
+            playerField.CreateEnemyMap();
 
             //ship_two_cell3.Image = RotateImage(ship_two_cell3.Image, 270, true, false, Color.White);
             //pictureBoxExtender1.Image = RotateImage(pictureBoxExtender1.Image, 90, true, false, Color.Transparent);
@@ -132,8 +138,8 @@ namespace Pr29
                 PictureBox_SelectedShip.Image = new Bitmap(1,1);
                 PictureBox_SelectedShip.A_RotationImage = new Bitmap(1,1);
                 // Есть идея. Вызывать эту функцию до расположения коробля.
-                FindAnchorPoints(pressedButton.Location, out Point start, out Point end);
-                FillAnchorPoints(start, end);
+                playerField.FindAnchorPoints(pressedButton.Location,ShipRotation, ShipSize, out Point start, out Point end);
+                playerField.FillAnchorPoints(start, end);
                 //SelectedImg.Size = new Size(104, 39);
                 //ship_four_cell.Location = new Point (pressedButton.Location.X, pressedButton.Location.Y+9);
                 MessageBox.Show("Player Map" + (pressedButton.Location.X / cellSize - 1) + ";" + pressedButton.Location.Y / cellSize + "= 1");
@@ -144,12 +150,13 @@ namespace Pr29
         {
             cell = (Point)sender.GetType().GetProperty("Location").GetValue(sender);
             ChageSelectedShipLocation(cell.X, cell.Y);
-            ProtectedLeavingField(cell);
 
+            if(playerField.IsLeaveField(cell, ShipRotation, ShipSize))
+                ShipRotation += 90;
 
-            if (!IsEmptyCellsAround(cell))
+            if (!playerField.IsEmptyCellsAround(cell,ShipSize))
             {
-                Point newCell = SearchEmptyPoint();
+                Point newCell = playerField.SearchEmptyPoint(ShipRotation, ShipSize);
                 int newRotation = GetRandom(0,90,180,270);
 
                 PictureBox_SelectedShip.Location = newCell;
@@ -159,64 +166,59 @@ namespace Pr29
                 listBox1.Items.Add(GetIndexButton(newCell, 0));
                 listBox1.Items.Add(GetIndexButton(newCell, 1));
 
-                Cursor.Position = PointToScreen(new Point(ButtonsCell[GetIndexButton(newCell,0),GetIndexButton(newCell,1)].Location.X + 7,
-                                            ButtonsCell[GetIndexButton(newCell, 0), GetIndexButton(newCell, 1)].Location.Y + 7));
+                Cursor.Position = PointToScreen(newCell);
 
                 listBox1.Items.Add("Позиция курсора" + Cursor.Position);
             }
 
-            if (!IsEmptyCellOnDerection(cell)) // Упростить функцию на две, для лучший читабельности. 
+            if (!playerField.IsEmptyCellOnDerection(cell, ShipRotation, ShipSize)) // Упростить функцию на две, для лучший читабельности. 
                                                                // Проверка ячеек и защита от выхода за границы поля.
             {
                 ShipRotation += 90;
             }
         }
-        /// <summary>
-        /// Определяет состояное ячеек вокруг. Поворот определяется из свойства ShipRotation.
-        /// </summary>
-        /// <param name="cell">Начальная точка коробля.</param>
-        /// <returns>Возвращяет true, если коробль можно расположить хотябы в одном направлении, в противном случае - false.</returns>
-        private bool IsEmptyCellsAround(Point cell)
+
+        private void button_start_Click(object sender, EventArgs e)
         {
-            bool isEmptyLeft = false;
-            bool isEmptyRight = false;
-            bool isEmptyTop = false;
-            bool isEmptyBottom = false;
+            if (ShipCount > 0)
+            {
+                MessageBox.Show("Поставте все корабли", "Предупреждение",MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                if (MessageBox.Show("Начать игру?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                    == DialogResult.Yes)
+                {
+                    #region delete tutorial buttons
+                    panel1.Controls.Remove(button_freeCell);
+                    panel1.Controls.Remove(button_occupiedCell);
+                    panel1.Controls.Remove(button_missedCell);
+                    panel1.Controls.Remove(button_hitCell);
+                    panel1.Controls.Remove(label_freeCell);
+                    panel1.Controls.Remove(label_occupiedCell);
+                    panel1.Controls.Remove(label_missedCell);
+                    panel1.Controls.Remove(label_hitCell);
+                    button_freeCell.Dispose();
+                    button_occupiedCell.Dispose();
+                    button_missedCell.Dispose();
+                    button_hitCell.Dispose();
+                    label_freeCell.Dispose();
+                    label_occupiedCell.Dispose();
+                    label_missedCell.Dispose();
+                    label_hitCell.Dispose();
+                    #endregion
 
-            GetIndexButton(cell, out int i, out int j);
+                    #region restore background image cell
+                    playerField.RestoreBackgroundImageField();
+                    #endregion
 
-            if (i + (ShipSize - 1) < 9 && ButtonsCell[i + 1, j].Enabled && ButtonsCell[i + (ShipSize - 1), j].Enabled)
-                isEmptyLeft = true;
+                    #region initialization bot
 
-            if (i - (ShipSize - 1) > 0 && ButtonsCell[i - 1, j].Enabled && ButtonsCell[i - (ShipSize - 1), j].Enabled)
-                isEmptyRight = true;
-
-            if (j + (ShipSize - 1) < 9 && ButtonsCell[i, j + 1].Enabled && ButtonsCell[i, j + (ShipSize - 1)].Enabled)
-                isEmptyTop = true;
-
-            if (j - (ShipSize - 1) > 0 && ButtonsCell[i, j - 1].Enabled && ButtonsCell[i, j - (ShipSize - 1)].Enabled)
-                isEmptyBottom = true;
-
-            return isEmptyLeft || isEmptyRight || isEmptyTop || isEmptyBottom;
+                    #endregion
+                }
+            }
         }
 
-        private Point SearchEmptyPoint()
-        {
-
-            Point newPoint = ButtonsLocation.ElementAt(new Random().Next(0, ButtonsLocation.Count));
-
-            while (!IsEmptyCellsAround(newPoint))
-            {
-                newPoint = ButtonsLocation.ElementAt(new Random().Next(0, ButtonsLocation.Count));
-            }
-
-            while (!IsEmptyCellOnDerection(newPoint))
-            {
-                ShipRotation += 90;
-            }
-
-            return newPoint;
-        }
         /// <summary>
         /// Возвращает случайное значение.
         /// </summary>
@@ -251,56 +253,6 @@ namespace Pr29
             }
         }
 
-        private void FindAnchorPoints(Point currentPoint, out Point start, out Point end)
-        {
-            #region SearchStartPoint
-            if (ShipRotation == 0 || ShipRotation == 90)
-                start = new Point(currentPoint.X - cellSize, currentPoint.Y - cellSize);
-            else if (ShipRotation == 180)
-                start = new Point(currentPoint.X - ShipSize * cellSize, currentPoint.Y - cellSize );
-            else
-                start = new Point(currentPoint.X - cellSize, currentPoint.Y - ShipSize * cellSize);
-            #endregion
-
-            #region SearchEndPoint
-            int offsetI = (2 + (ShipSize - 1)) * cellSize;
-            int offsetJ = 2 * cellSize;
-
-            if (ShipRotation == 90 || ShipRotation == 270)
-            {
-                int temp = offsetI;
-                offsetI = offsetJ;
-                offsetJ = temp;
-            }
-
-            end = new Point(start.X + offsetI,start.Y + offsetJ);
-            #endregion
-        }
-
-
-        private void FillAnchorPoints(Point start, Point end)
-        {
-
-            int startIndexI = GetIndexButton(start, 0), starIdenxJ = GetIndexButton(start, 1);
-            int endIndexI = GetIndexButton(end, 0), endIndexJ = GetIndexButton(end, 1);
-
-            for (int i = startIndexI; i <= endIndexI; i++)
-            {
-                if (i > 9 || i < 0)
-                    continue;
-                for (int j = starIdenxJ; j <= endIndexJ; j++)
-                {
-                    if ( j > 9 || j < 0)
-                        continue;
-                    ButtonsCell[i, j].Enabled = false;
-                    playerMap[i, j] -= 1;
-                    ButtonsCell[i, j].BackgroundImage = ResourceImages.Occupied_cell_for_SW;
-                    ButtonsCell[i, j].BackgroundImageLayout = ImageLayout.Zoom;
-                    ButtonsLocation.Remove(ButtonsCell[i, j].Location);
-                }
-            }
-
-        }
         /// <summary>
         /// Находит идекс массива кнопок поля.
         /// </summary>
@@ -320,90 +272,6 @@ namespace Pr29
             indexI = button.X / cellSize - 1;
             indexJ = button.Y / cellSize;
 
-        }
-        /// <summary>
-        /// Определяет возможность размещения коробля на поле.
-        /// </summary>
-        /// <param name="startCellShipPlaced">Точка от которой считается начальное расположение коробля.</param>
-        /// <returns>Возвращает true, если по направлению расположения коробля есть пустые ячейки, и он может их занять.</returns>
-        private bool IsEmptyCellOnDerection(Point startCellShipPlaced)
-        {
-            bool IsEmpty = false; // Флаг состояния ячеек.
-            int CountCellForChecking = ShipSize - 1; // Колличество ячеек для проверки, не включая текущую.
-            // Индекс первого измерения нажатой кнопки в массиве Buttons_cell.
-            // Индекс второго измерения нажатой кнопки в массиве Buttons_cell.
-            GetIndexButton(startCellShipPlaced, out int i, out int j);
-            if (!ButtonsCell[i, j].Enabled)
-                return false;
-
-            //if (i + CountCellForChecking > 9 || j + CountCellForChecking > 9 || i - CountCellForChecking < 0 || j - CountCellForChecking < 0)
-                //return false;
-            if (CountCellForChecking > 0)
-            {
-                try
-                {
-                    switch (ShipRotation)
-                    {
-                        case 0:
-                            if (ButtonsCell[i + CountCellForChecking, j].Enabled && ButtonsCell[i + 1, j].Enabled)
-                                IsEmpty = true;
-                            break;
-                        case 90:
-                            if (ButtonsCell[i, j + CountCellForChecking].Enabled && ButtonsCell[i, j + 1].Enabled)
-                                IsEmpty = true;
-                            break;
-                        case 180:
-                            if (ButtonsCell[i - CountCellForChecking, j].Enabled && ButtonsCell[i - 1, j].Enabled)
-                                IsEmpty = true;
-                            break;
-                        case 270:
-                            if (ButtonsCell[i, j - CountCellForChecking].Enabled && ButtonsCell[i, j - 1].Enabled)
-                                IsEmpty = true;
-                            break;
-                    }
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    ProtectedLeavingField(cell);
-                    IsEmpty = true;
-                    // IsEmptyCellOnDerection(cell); Пока не знаю как точно обработать исключение.
-                }
-                
-            }
-            else
-                IsEmpty = true;
-
-            return IsEmpty;
-        }
-        /// <summary>
-        /// Изменяет поворот коробля есть от вышел на границы поля.
-        /// </summary>
-        /// <param name="startCellShipPlaced">Точка от которой считается начальное расположение коробля.</param>
-        private void ProtectedLeavingField(Point startCellShipPlaced)
-        {
-            int CountCellForChecking = ShipSize - 1; // Колличество ячеек для проверки, не включая текущую.
-            // Индекс первого измерения нажатой кнопки в массиве Buttons_cell.
-            // Индекс второго измерения нажатой кнопки в массиве Buttons_cell.
-            GetIndexButton(startCellShipPlaced, out int i, out int j);
-            switch (ShipRotation)
-            {
-                case 0:
-                    if (i + CountCellForChecking > 9)
-                        ShipRotation += 90;
-                    break;
-                case 90:
-                    if (j + CountCellForChecking > 9)
-                        ShipRotation += 90;
-                    break;
-                case 180:
-                    if (i - CountCellForChecking < 0)
-                        ShipRotation += 90;
-                    break;
-                case 270:
-                    if (j - CountCellForChecking < 0)
-                        ShipRotation += 90;
-                    break;
-            }
         }
 
         private void ship_four_cell_MouseMove(object sender, MouseEventArgs e)

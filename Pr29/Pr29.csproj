@@ -70,6 +70,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceImages.resx</DependentUpon>
     </Compile>
+    <Compile Include="SeaField.cs" />
     <Compile Include="SeaWarsForm.cs">
       <SubType>Form</SubType>
     </Compile>
