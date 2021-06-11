@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SeaWarsForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button_restartField = new System.Windows.Forms.Button();
             this.label_occupiedCell = new System.Windows.Forms.Label();
             this.button_occupiedCell = new System.Windows.Forms.Button();
             this.label_freeCell = new System.Windows.Forms.Label();
@@ -42,8 +43,7 @@
             this.button_missedCell = new System.Windows.Forms.Button();
             this.button_start = new System.Windows.Forms.Button();
             this.button_avtoGenerate = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button_restartField = new System.Windows.Forms.Button();
+            this.label_title = new System.Windows.Forms.Label();
             this.ship_four_cell = new Pr29.PictureBoxExtender();
             this.ship_three_cell2 = new Pr29.PictureBoxExtender();
             this.ship_three_cell = new Pr29.PictureBoxExtender();
@@ -101,11 +101,26 @@
             this.panel1.Controls.Add(this.button_missedCell);
             this.panel1.Controls.Add(this.button_start);
             this.panel1.Controls.Add(this.button_avtoGenerate);
-            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.label_title);
             this.panel1.Location = new System.Drawing.Point(1, 2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1289, 705);
             this.panel1.TabIndex = 4;
+            // 
+            // button_restartField
+            // 
+            this.button_restartField.BackgroundImage = global::Pr29.ResourceImages.Button_start;
+            this.button_restartField.FlatAppearance.BorderSize = 0;
+            this.button_restartField.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button_restartField.Font = new System.Drawing.Font("Exo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_restartField.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.button_restartField.Location = new System.Drawing.Point(992, 369);
+            this.button_restartField.Name = "button_restartField";
+            this.button_restartField.Size = new System.Drawing.Size(235, 46);
+            this.button_restartField.TabIndex = 42;
+            this.button_restartField.Text = "Сбросить";
+            this.button_restartField.UseVisualStyleBackColor = true;
+            this.button_restartField.Click += new System.EventHandler(this.button_restartField_Click);
             // 
             // label_occupiedCell
             // 
@@ -200,9 +215,9 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(1025, 35);
+            this.listBox1.Location = new System.Drawing.Point(232, 602);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(212, 160);
+            this.listBox1.Size = new System.Drawing.Size(212, 56);
             this.listBox1.TabIndex = 21;
             // 
             // button_missedCell
@@ -248,31 +263,18 @@
             this.button_avtoGenerate.TabIndex = 16;
             this.button_avtoGenerate.Text = "Автоматически";
             this.button_avtoGenerate.UseVisualStyleBackColor = true;
+            this.button_avtoGenerate.Click += new System.EventHandler(this.button_avtoGenerate_Click);
             // 
-            // label1
+            // label_title
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Exo 2", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label1.Location = new System.Drawing.Point(718, 35);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(467, 57);
-            this.label1.TabIndex = 15;
-            this.label1.Text = "Расставте корабли";
-            // 
-            // button_restartField
-            // 
-            this.button_restartField.BackgroundImage = global::Pr29.ResourceImages.Button_start;
-            this.button_restartField.FlatAppearance.BorderSize = 0;
-            this.button_restartField.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_restartField.Font = new System.Drawing.Font("Exo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button_restartField.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.button_restartField.Location = new System.Drawing.Point(992, 369);
-            this.button_restartField.Name = "button_restartField";
-            this.button_restartField.Size = new System.Drawing.Size(235, 46);
-            this.button_restartField.TabIndex = 42;
-            this.button_restartField.Text = "Сбросить";
-            this.button_restartField.UseVisualStyleBackColor = true;
+            this.label_title.AutoSize = true;
+            this.label_title.Font = new System.Drawing.Font("Exo 2", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_title.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.label_title.Location = new System.Drawing.Point(718, 35);
+            this.label_title.Name = "label_title";
+            this.label_title.Size = new System.Drawing.Size(467, 57);
+            this.label_title.TabIndex = 15;
+            this.label_title.Text = "Расставте корабли";
             // 
             // ship_four_cell
             // 
@@ -545,11 +547,10 @@
 
         #endregion
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label_title;
         private System.Windows.Forms.Button button_start;
         private System.Windows.Forms.Button button_avtoGenerate;
         private System.Windows.Forms.Button button_missedCell;
-        private System.Windows.Forms.ListBox listBox1;
         private PictureBoxExtender pictureBoxExtender1;
         private PictureBoxExtender PictureBox_SelectedShip;
         private PictureBoxExtender ship_one_cell4;
@@ -571,5 +572,6 @@
         private System.Windows.Forms.Label label_freeCell;
         private System.Windows.Forms.Button button_freeCell;
         private System.Windows.Forms.Button button_restartField;
+        public System.Windows.Forms.ListBox listBox1;
     }
 }

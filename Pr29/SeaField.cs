@@ -8,20 +8,39 @@ using System.Windows.Forms;
 
 namespace Pr29
 {   /// <summary>
-    /// Игровое поле для игры морской бой.
+    /// Представляет графическое и программное игровое поле для игры морской бой.
     /// </summary>
     class SeaField
     {
         private int mapSize;
-        public int[,] map { get; }
+        public int[,] Map { get; protected set; }
         private int cellSize = 54;
         private bool forPlayer;
         private Control panel;
-        private Button[,] ButtonsCell;
-        private List<Point> ButtonsLocation = new List<Point>();
+        public Button[,] ButtonsCell;
+        private List<Point> FreeButtonsLocation = new List<Point>();
 
         EventHandler PlaceShip;
         MouseEventHandler Cell_mouseMove;
+
+        ListBox console;
+
+        public Button this[int indexI,int indexJ]
+        {
+            get { return ButtonsCell[indexI, indexJ]; }
+            private set { ButtonsCell[indexI, indexJ] = value; }
+        }
+
+        public void ChangeBackgroundImage(Point CellPoint, Bitmap Image)
+        {
+            GetIndexButton(CellPoint, out int indexI, out int indexJ);
+            ButtonsCell[indexI, indexJ].BackgroundImage = Image;
+        }
+
+        public void ChangeBackgroundImage(Button Cell, Bitmap Image)
+        {
+            Cell.BackgroundImage = Image;
+        }
 
         /// <summary>
         /// Конструктор, инициализирующий объект - игровое поле игрока.
@@ -34,7 +53,7 @@ namespace Pr29
             this.mapSize = mapSize;
             forPlayer = true;
             this.panel = panel;
-            map = new int[mapSize, mapSize];
+            Map = new int[mapSize, mapSize];
             ButtonsCell = new Button[mapSize, mapSize];
 
             this.PlaceShip = PlaceShip;
@@ -45,14 +64,15 @@ namespace Pr29
         /// </summary>
         /// <param name="mapSize"></param>
         /// <param name="panel"></param>
-        public SeaField(int mapSize, Control panel)
+        public SeaField(int mapSize, Control panel, ListBox console)
         {
             this.mapSize = mapSize;
             forPlayer = false;
             this.panel = panel;
-            map = new int[mapSize, mapSize];
+            Map = new int[mapSize, mapSize];
             ButtonsCell = new Button[mapSize, mapSize];
 
+            this.console = console;
         }
         /// <summary>
         /// Создаёт игровое поле из ячеек.
@@ -65,7 +85,7 @@ namespace Pr29
                 CreateEnemyMap();
         }
 
-        public void CreateEnemyMap()
+        private void CreateEnemyMap()
         {
             // Расстановка нумерных ячеек.
             char[] alphabet = { 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К' };
@@ -101,19 +121,18 @@ namespace Pr29
             {
                 for (int j = 0; j < mapSize; j++)
                 {
-                    map[i, j] = 0;
+                    Map[i, j] = 0;
                     Button cell = new Button();
-                    cell.Location = new Point(1100 + i * (-cellSize) + 67, j * cellSize + 50);
+                    cell.Location = new Point(600 + i * cellSize + 67, j * cellSize + 50);
                     cell.Size = new Size(cellSize, cellSize);
                     cell.BackColor = Color.Transparent;
                     cell.BackgroundImage = ResourceImages.Cell_for_SeaWars;
                     cell.BackgroundImageLayout = ImageLayout.Zoom;
-                    cell.FlatAppearance.BorderSize = 0;
                     cell.FlatStyle = FlatStyle.Flat;
-                    cell.Click += new EventHandler(PlaceShip);
-                    cell.MouseMove += new MouseEventHandler(Cell_mouseMove);
+                    cell.FlatAppearance.BorderSize = 0;
+                    cell.MouseEnter += new EventHandler(CheckInfoPos);
                     ButtonsCell[i, j] = cell;
-                    ButtonsLocation.Add(cell.Location);
+                    FreeButtonsLocation.Add(cell.Location);
                     panel.Controls.Add(cell);
                 }
             }
@@ -152,7 +171,7 @@ namespace Pr29
             {
                 for (int j = 0; j < mapSize; j++)
                 {
-                    map[i, j] = 0;
+                    Map[i, j] = 0;
                     Button cell = new Button();
                     cell.Location = new Point(i * cellSize + 67, j * cellSize + 50);
                     cell.Size = new Size(cellSize, cellSize);
@@ -164,7 +183,7 @@ namespace Pr29
                     cell.Click += new EventHandler(PlaceShip);
                     cell.MouseMove += new MouseEventHandler(Cell_mouseMove);
                     ButtonsCell[i, j] = cell;
-                    ButtonsLocation.Add(cell.Location);
+                    FreeButtonsLocation.Add(cell.Location);
                     panel.Controls.Add(cell);
                 }
             }
@@ -177,7 +196,52 @@ namespace Pr29
                 for (int j = 0; j < mapSize; j++)
                 {
                     ButtonsCell[i, j].BackgroundImage = ResourceImages.Cell_for_SeaWars;
+                    ButtonsCell[i, j].Click -= new EventHandler(PlaceShip);
+                    ButtonsCell[i, j].MouseMove -= new MouseEventHandler(Cell_mouseMove);
                 }
+            }
+        }
+
+        private void CheckInfoPos(object sender, EventArgs e)
+        {
+            Button cell = sender as Button;
+            GetIndexButton(cell.Location, out int indexI, out int indexJ);
+
+            console.Items.Clear();
+            console.Items.Add($"{cell.Location.X};{cell.Location.Y}");
+            console.Items.Add($"{indexI};{indexJ}");
+        }
+
+        public void AvtoPlaceShips(PictureBoxExtender[] ships)
+        {
+            for (int i = 0; i < ships.Length; i++)
+            {
+                //System.Threading.Thread.Sleep(1000);
+                int shipRotation = 0;
+                int shipSize = Convert.ToInt32(ships[i].Tag); 
+                ships[i].Location = SearchEmptyPoint(ref shipRotation, shipSize);
+
+                FindAnchorPoints(ships[i].Location, shipRotation, shipSize, out Point start, out Point end);
+                FillAnchorPoints(start, end);
+
+                ships[i].Rotation = shipRotation;
+
+                switch (shipRotation)
+                {
+                    case 0:
+                        ships[i].Location= new Point(ships[i].Location.X, ships[i].Location.Y + 7);
+                        break;
+                    case 90:
+                        ships[i].Location= new Point(ships[i].Location.X + 7, ships[i].Location.Y);
+                        break;
+                    case 180:
+                        ships[i].Location = new Point(ships[i].Location.X - cellSize * (shipSize - 1), ships[i].Location.Y + 7);
+                        break;
+                    default:
+                        ships[i].Location = new Point(ships[i].Location.X + 7, ships[i].Location.Y - cellSize * (shipSize - 1));
+                        break;
+                }
+
             }
         }
 
@@ -254,7 +318,7 @@ namespace Pr29
                 catch (IndexOutOfRangeException)
                 {
                     IsLeaveField(startCellShipPlaced, ShipRotation, ShipSize);
-                    IsEmpty = true;
+                    IsEmpty = false;
                     // IsEmptyCellOnDerection(cell); Пока не знаю как точно обработать исключение.
                 }
 
@@ -308,14 +372,14 @@ namespace Pr29
         /// <param name="ShipRotation"></param>
         /// <param name="ShipSize"></param>
         /// <returns>Новые координаты стартовой точки</returns>
-        public Point SearchEmptyPoint(int ShipRotation, int ShipSize)
+        public Point SearchEmptyPoint(ref int ShipRotation, int ShipSize)
         {
 
-            Point newPoint = ButtonsLocation.ElementAt(new Random().Next(0, ButtonsLocation.Count));
+            Point newPoint = FreeButtonsLocation.ElementAt(new Random().Next(0, FreeButtonsLocation.Count));
 
             while (!IsEmptyCellsAround(newPoint, ShipSize))
             {
-                newPoint = ButtonsLocation.ElementAt(new Random().Next(0, ButtonsLocation.Count));
+                newPoint = FreeButtonsLocation.ElementAt(new Random().Next(0, FreeButtonsLocation.Count));
             }
 
             while (!IsEmptyCellOnDerection(newPoint, ShipRotation, ShipSize))
@@ -382,24 +446,24 @@ namespace Pr29
                     //playerMap[i, j] -= 1;
                     ButtonsCell[i, j].BackgroundImage = ResourceImages.Occupied_cell_for_SW;
                     ButtonsCell[i, j].BackgroundImageLayout = ImageLayout.Zoom;
-                    ButtonsLocation.Remove(ButtonsCell[i, j].Location);
+                    FreeButtonsLocation.Remove(ButtonsCell[i, j].Location);
                 }
             }
 
         }
 
         /// <summary>
-        /// Находит идекс массива кнопок поля.
+        /// Находит идекс кнопки в массиве кнопок поля. Возвращает позицию кнопки в массиве.
         /// </summary>
-        /// <param name="button"></param>
-        /// <param name="indexI"></param>
-        /// <param name="indexJ"></param>
-        public void GetIndexButton(Point button, out int indexI, out int indexJ)
+        /// <param name="button">Позиция кнопки</param>
+        /// <param name="indexI">Выходной параметр. Позиция кнопки в первом измерении.</param>
+        /// <param name="indexJ">Выходной параметр. Позиция кнопки в второй измерении.</param>
+        private void GetIndexButton(Point button, out int indexI, out int indexJ)
         {
-            if (button.X > 500)
+            if (!forPlayer) // Если поле принадлежит боту (расположено справо).
             {
-                indexI = button.X / cellSize - 1 - 10;
-                indexJ = button.Y / cellSize - 10;
+                //button.X = 1167 + 54 - button.X;
+                button.X -= 613;
             }
 
             indexI = button.X / cellSize - 1;

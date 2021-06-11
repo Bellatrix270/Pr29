@@ -28,6 +28,7 @@ namespace Pr29
         bool isPlaying = false;
         Button[,] ButtonsCell = new Button[mapsize, mapsize];
         PictureBoxExtender SelectedImg = new PictureBoxExtender();
+        PictureBoxExtender[] Ships = new PictureBoxExtender[10];
         bool status;
         int CountRotation;
         Point cell;
@@ -37,6 +38,18 @@ namespace Pr29
         public SeaWarsForm()
         {
             InitializeComponent();
+
+            // Добовляем первые 10 элментов класса PictureBoxExtender в массив кораблей.
+            int i = 0;
+            foreach (var item in panel1.Controls)
+            {
+                if (item is PictureBoxExtender && i < 10)
+                {
+                    Ships[i] = item as PictureBoxExtender;
+                    i++;
+                }
+            }
+
             //CreatePlayerMap();
             KeyUp += new KeyEventHandler(KeyRotate);
 
@@ -51,8 +64,7 @@ namespace Pr29
             panel1.Controls.Add(PictureBox_AnyShip);
 
             playerField = new SeaField(10, panel1, PlaceShip, Cell_mouseMove);
-            //playerField.CreateMap();
-            playerField.CreateEnemyMap();
+            playerField.CreateMap();
 
             //ship_two_cell3.Image = RotateImage(ship_two_cell3.Image, 270, true, false, Color.White);
             //pictureBoxExtender1.Image = RotateImage(pictureBoxExtender1.Image, 90, true, false, Color.Transparent);
@@ -97,7 +109,7 @@ namespace Pr29
 
         private void SetSeclectedShip(object sender, EventArgs e)
         {
-            SelectedImg = sender as PictureBoxExtender; // Перемещение PictureBox в переменную.
+            SelectedImg = sender as PictureBoxExtender; // Перемещение ссылки на PictureBox в переменную.
             SelectedImg.A_RotationImage = SelectedImg.Image;
             PictureBox_SelectedShip.Image = SelectedImg.Image;
             PictureBox_SelectedShip.A_RotationImage = SelectedImg.Image;
@@ -151,12 +163,14 @@ namespace Pr29
             cell = (Point)sender.GetType().GetProperty("Location").GetValue(sender);
             ChageSelectedShipLocation(cell.X, cell.Y);
 
-            if(playerField.IsLeaveField(cell, ShipRotation, ShipSize))
+            if (playerField.IsLeaveField(cell, ShipRotation, ShipSize))
                 ShipRotation += 90;
 
             if (!playerField.IsEmptyCellsAround(cell,ShipSize))
             {
-                Point newCell = playerField.SearchEmptyPoint(ShipRotation, ShipSize);
+                int rotation = ShipRotation;
+                Point newCell = playerField.SearchEmptyPoint(ref rotation, ShipSize);
+                ShipRotation = rotation;
                 int newRotation = GetRandom(0,90,180,270);
 
                 PictureBox_SelectedShip.Location = newCell;
@@ -198,6 +212,10 @@ namespace Pr29
                     panel1.Controls.Remove(label_occupiedCell);
                     panel1.Controls.Remove(label_missedCell);
                     panel1.Controls.Remove(label_hitCell);
+                    panel1.Controls.Remove(label_title);
+                    panel1.Controls.Remove(button_start);
+                    panel1.Controls.Remove(button_restartField);
+                    panel1.Controls.Remove(button_avtoGenerate);
                     button_freeCell.Dispose();
                     button_occupiedCell.Dispose();
                     button_missedCell.Dispose();
@@ -206,6 +224,10 @@ namespace Pr29
                     label_occupiedCell.Dispose();
                     label_missedCell.Dispose();
                     label_hitCell.Dispose();
+                    label_title.Dispose();
+                    button_start.Dispose();
+                    button_restartField.Dispose();
+                    button_avtoGenerate.Dispose();
                     #endregion
 
                     #region restore background image cell
@@ -213,10 +235,29 @@ namespace Pr29
                     #endregion
 
                     #region initialization bot
-
+                    PictureBoxExtender[] botShips = new PictureBoxExtender[Ships.Length];
+                    for (int i = 0; i < Ships.Length; i++)
+                    {
+                        botShips[i] = (PictureBoxExtender)Ships[i].Clone();
+                        panel1.Controls.Add(botShips[i]);
+                    }
+                    Bot bot = new Bot(panel1, botShips, listBox1, playerField);
+                    bot.Shot();
+                    //playerField[0,0];
                     #endregion
                 }
             }
+        }
+
+        private void button_restartField_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+        }
+
+        private void button_avtoGenerate_Click(object sender, EventArgs e)
+        {
+            playerField.AvtoPlaceShips(Ships);
+            ShipCount = 0;
         }
 
         /// <summary>

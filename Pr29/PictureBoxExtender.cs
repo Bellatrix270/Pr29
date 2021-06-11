@@ -45,6 +45,25 @@ namespace Pr29
         [EditorBrowsable(EditorBrowsableState.Never)]
         public int ShipSize { get; set; }
 
+        public object Clone()
+        {
+            return new PictureBoxExtender
+            {
+                A_RotationImage = this.A_RotationImage,
+                Image = this.Image,
+                Location = this.Location,
+                Name = this.Name,
+                RotateFlip = this.RotateFlip,
+                Rotation = this.Rotation,
+                ShipSize = this.ShipSize,
+                Size = this.Size,
+                SizeMode = this.SizeMode,
+                TabIndex = this.TabIndex,
+                TabStop = this.TabStop,
+                Tag = this.Tag
+            };
+        }
+
         public Image RotateImage(Image img, float rotationAngle)
         {
             //create an empty Bitmap image
