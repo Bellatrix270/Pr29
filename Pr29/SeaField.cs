@@ -10,7 +10,7 @@ namespace Pr29
 {   /// <summary>
     /// Представляет графическое и программное игровое поле для игры морской бой.
     /// </summary>
-    class SeaField
+    partial class SeaField
     {
         private int mapSize;
         public int[,] Map { get; protected set; }
@@ -20,10 +20,11 @@ namespace Pr29
         public Button[,] ButtonsCell;
         private List<Point> FreeButtonsLocation = new List<Point>();
 
-        EventHandler PlaceShip;
+        EventHandler PlaceShip, Event_SetSelectedShip;
         MouseEventHandler Cell_mouseMove;
 
         ListBox console;
+        private int ShipCount;
 
         public Button this[int indexI,int indexJ]
         {
@@ -40,6 +41,12 @@ namespace Pr29
         public void ChangeBackgroundImage(Button Cell, Bitmap Image)
         {
             Cell.BackgroundImage = Image;
+            i = 2;
+        }
+
+        public SeaField()
+        {
+
         }
 
         /// <summary>
@@ -58,6 +65,34 @@ namespace Pr29
 
             this.PlaceShip = PlaceShip;
             this.Cell_mouseMove = Cell_mouseMove;
+
+            PictureBoxExtender PictureBox_SelectedShip = new Pr29.PictureBoxExtender();
+            panel.Controls.Add(PictureBox_SelectedShip);
+            PictureBox_SelectedShip.A_RotationImage = null;
+            PictureBox_SelectedShip.Enabled = false;
+            PictureBox_SelectedShip.Location = new System.Drawing.Point(841, 471);
+            PictureBox_SelectedShip.Name = "PictureBox_SelectedShip";
+            PictureBox_SelectedShip.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
+            PictureBox_SelectedShip.Rotation = 0F;
+            PictureBox_SelectedShip.ShipSize = 0;
+            PictureBox_SelectedShip.Size = new System.Drawing.Size(100, 50);
+            PictureBox_SelectedShip.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            PictureBox_SelectedShip.TabIndex = 23;
+            PictureBox_SelectedShip.TabStop = false;
+
+            void SetSelectedShip(object sender, EventArgs e)
+            {
+                PictureBoxExtender SelectedImg = sender as PictureBoxExtender; // Перемещение ссылки на PictureBox в переменную.
+                SelectedImg.A_RotationImage = SelectedImg.Image;
+                PictureBox_SelectedShip.Image = SelectedImg.Image;
+                PictureBox_SelectedShip.A_RotationImage = SelectedImg.Image;
+                // Для оптимизации можно попробовать сделать получение данных, как в методе PlaceShip.
+                // Свойство Tag можно перевести в int в Designer.cs.
+                //ShipSize = Convert.ToInt32(sender.GetType().GetProperty("Tag").GetValue(sender));
+            }
+
+            Event_SetSelectedShip = SetSelectedShip;
+
         }
         /// <summary>
         /// Конструктор, инициализирующий объект - игровое поле противника (бота).
@@ -73,6 +108,8 @@ namespace Pr29
             ButtonsCell = new Button[mapSize, mapSize];
 
             this.console = console;
+
+            InitializeComponent();
         }
         /// <summary>
         /// Создаёт игровое поле из ячеек.
@@ -244,6 +281,51 @@ namespace Pr29
 
             }
         }
+
+        /// <summary>
+        /// Рапологает корабль на игровом поле, фиксируя занятые кораблём ячейки в отдельный массив int Map.
+        /// </summary>
+        /// <param name="ShipCount">Количество доступных короблей для расстановки.</param>
+        /// <returns>Количество доступных короблей для расстановки, после раположения текущего.</returns>
+        //public int PlaceShips(object sender, EventArgs e)
+        //{
+        //    Point locationPressedButton = (sender as Button).Location;
+        //    if (ShipCount > 0)
+        //    {
+        //        ShipCount--;
+        //        // PictureBox устанавливать тег кораблей и в цикле, учитывая поворот, заполнять поле.
+        //        for (int i = 0; i < ShipSize; i++)
+        //        {
+        //            switch (ShipRotation)
+        //            {
+        //                case 0:
+        //                    playerMap[((locationPressedButton.X / cellSize) - 1) + i, locationPressedButton.Y / cellSize] = 1;
+        //                    break;
+        //                case 90:
+        //                    playerMap[(locationPressedButton.X / cellSize) - 1, (locationPressedButton.Y / cellSize) + i] = 1;
+        //                    break;
+        //                case 180:
+        //                    playerMap[((locationPressedButton.X / cellSize) - 1) + (-i), locationPressedButton.Y / cellSize] = 1;
+        //                    break;
+        //                default:
+        //                    playerMap[(locationPressedButton.Location.X / cellSize) - 1, (locationPressedButton.Location.Y / cellSize) + (-i)] = 1;
+        //                    break;
+        //            }
+        //        }
+        //        SelectedImg.Location = PictureBox_SelectedShip.Location;
+        //        SelectedImg.Rotation = ShipRotation;
+        //        SelectedImg = null;
+        //        PictureBox_SelectedShip.Image = new Bitmap(1, 1);
+        //        PictureBox_SelectedShip.A_RotationImage = new Bitmap(1, 1);
+        //        // Есть идея. Вызывать эту функцию до расположения коробля.
+        //        playerField.FindAnchorPoints(locationPressedButton, ShipRotation, ShipSize, out Point start, out Point end);
+        //        playerField.FillAnchorPoints(start, end);
+        //        //SelectedImg.Size = new Size(104, 39);
+        //        //ship_four_cell.Location = new Point (pressedButton.Location.X, pressedButton.Location.Y+9);
+        //        MessageBox.Show("Player Map" + (locationPressedButton.X / cellSize - 1) + ";" + locationPressedButton.Y / cellSize + "= 1");
+        //        return ShipCount--;
+        //    }
+        //}
 
         /// <summary>
         /// Определяет состояное ячеек вокруг. Поворот определяется из свойства ShipRotation.

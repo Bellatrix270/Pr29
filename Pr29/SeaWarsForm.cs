@@ -107,7 +107,7 @@ namespace Pr29
             }
         }
 
-        private void SetSeclectedShip(object sender, EventArgs e)
+        public void SetSeclectedShip(object sender, EventArgs e)
         {
             SelectedImg = sender as PictureBoxExtender; // Перемещение ссылки на PictureBox в переменную.
             SelectedImg.A_RotationImage = SelectedImg.Image;
@@ -118,7 +118,7 @@ namespace Pr29
             ShipSize = Convert.ToInt32(sender.GetType().GetProperty("Tag").GetValue(sender));
         }
 
-        private void PlaceShip(object sender, EventArgs e)
+        public void PlaceShip(object sender, EventArgs e)
         {
             Button pressedButton = sender as Button;
             if (!isPlaying && ShipCount > 0)
@@ -235,14 +235,14 @@ namespace Pr29
                     #endregion
 
                     #region initialization bot
-                    PictureBoxExtender[] botShips = new PictureBoxExtender[Ships.Length];
-                    for (int i = 0; i < Ships.Length; i++)
-                    {
-                        botShips[i] = (PictureBoxExtender)Ships[i].Clone();
-                        panel1.Controls.Add(botShips[i]);
-                    }
-                    Bot bot = new Bot(panel1, botShips, listBox1, playerField);
-                    bot.Shot();
+                    //PictureBoxExtender[] botShips = new PictureBoxExtender[Ships.Length];
+                    //for (int i = 0; i < Ships.Length; i++)
+                    //{
+                    //    botShips[i] = (PictureBoxExtender)Ships[i].Clone();
+                    //    panel1.Controls.Add(botShips[i]);
+                    //}
+                    Bot bot = new Bot(panel1, listBox1, playerField);
+                    //bot.Shot();
                     //playerField[0,0];
                     #endregion
                 }

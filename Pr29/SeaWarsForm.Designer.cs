@@ -474,6 +474,7 @@
             this.ClientSize = new System.Drawing.Size(1289, 681);
             this.Controls.Add(this.panel1);
             this.KeyPreview = true;
+            this.MaximizeBox = false;
             this.Name = "SeaWarsForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SeaWarsForm";

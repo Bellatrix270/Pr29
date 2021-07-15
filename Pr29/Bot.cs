@@ -10,7 +10,7 @@ namespace Pr29
     /// <summary>
     /// Бот для игры в морской, со своим игровым полем.
     /// </summary>
-    class Bot
+    class Bot : SeaField
     {
         public int lifeShip = 10;
 
@@ -19,17 +19,19 @@ namespace Pr29
         SeaField targetMap;
         PictureBoxExtender[] ships;
 
-        public Bot(System.Windows.Forms.Control panel, PictureBoxExtender[] Ships, System.Windows.Forms.ListBox console, SeaField targetMap)
+        public Bot(System.Windows.Forms.Control panel, System.Windows.Forms.ListBox console, SeaField targetMap)
         {
             Map = new SeaField(10, panel, console);
             Map.CreateMap();
-            ships = Ships;
-            Map.AvtoPlaceShips(ships);
+            //ships = Ships;
+            //Map.AvtoPlaceShips(ships);
 
             this.targetMap = targetMap;
 
             foreach (var item in this.targetMap.ButtonsCell)
                 FreeCellPosition.Add(item.Location);
+
+            getInfoAboutShip(0);
         }
 
         public void Shot()
