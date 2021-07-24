@@ -63,6 +63,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Player.cs" />
+    <Compile Include="PlayerSeaField.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceImages.Designer.cs">
@@ -70,9 +72,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResourceImages.resx</DependentUpon>
     </Compile>
-    <Compile Include="SeaField.cs" />
-    <Compile Include="SeaField.Designer.cs">
-      <DependentUpon>SeaField.cs</DependentUpon>
+    <Compile Include="BotSeaField.cs" />
+    <Compile Include="BotSeaField.Designer.cs">
+      <DependentUpon>BotSeaField.cs</DependentUpon>
     </Compile>
     <Compile Include="SeaWarsForm.cs">
       <SubType>Form</SubType>

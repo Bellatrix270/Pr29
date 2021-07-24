@@ -19,7 +19,7 @@ namespace Pr29
         int[,] playerMap = new int[mapsize, mapsize];
         List<Point> ButtonsLocation = new List<Point>();
         int[,] enemyMap = new int[mapsize, mapsize];
-        int ShipSize = 1, ShipCount = 10;
+        int ShipSize = 2, ShipCount = 10;
         private int ShipRotation // Local rotation property of the selected ship.
         {
             get {  return (int)PictureBox_SelectedShip.Rotation;  }
@@ -33,7 +33,7 @@ namespace Pr29
         int CountRotation;
         Point cell;
 
-        SeaField playerField;
+        BotSeaField playerField;
 
         public SeaWarsForm()
         {
@@ -41,7 +41,7 @@ namespace Pr29
 
             // Добовляем первые 10 элментов класса PictureBoxExtender в массив кораблей.
             int i = 0;
-            foreach (var item in panel1.Controls)
+            foreach (var item in MainPanel.Controls)
             {
                 if (item is PictureBoxExtender && i < 10)
                 {
@@ -61,9 +61,9 @@ namespace Pr29
                 BackgroundImage = ResourceImages.Ship3_for_SeaWars,
                 BackgroundImageLayout = ImageLayout.Zoom
             };
-            panel1.Controls.Add(PictureBox_AnyShip);
+            MainPanel.Controls.Add(PictureBox_AnyShip);
 
-            playerField = new SeaField(10, panel1, PlaceShip, Cell_mouseMove);
+            playerField = new PlayerSeaField(10, PlayerField_panel, PlayerShips_panel, PictureBox_SelectedShip);
             playerField.CreateMap();
 
             //ship_two_cell3.Image = RotateImage(ship_two_cell3.Image, 270, true, false, Color.White);
@@ -194,7 +194,7 @@ namespace Pr29
 
         private void button_start_Click(object sender, EventArgs e)
         {
-            if (ShipCount > 0)
+            if (ShipCount < 0)
             {
                 MessageBox.Show("Поставте все корабли", "Предупреждение",MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -204,18 +204,18 @@ namespace Pr29
                     == DialogResult.Yes)
                 {
                     #region delete tutorial buttons
-                    panel1.Controls.Remove(button_freeCell);
-                    panel1.Controls.Remove(button_occupiedCell);
-                    panel1.Controls.Remove(button_missedCell);
-                    panel1.Controls.Remove(button_hitCell);
-                    panel1.Controls.Remove(label_freeCell);
-                    panel1.Controls.Remove(label_occupiedCell);
-                    panel1.Controls.Remove(label_missedCell);
-                    panel1.Controls.Remove(label_hitCell);
-                    panel1.Controls.Remove(label_title);
-                    panel1.Controls.Remove(button_start);
-                    panel1.Controls.Remove(button_restartField);
-                    panel1.Controls.Remove(button_avtoGenerate);
+                    MainPanel.Controls.Remove(button_freeCell);
+                    MainPanel.Controls.Remove(button_occupiedCell);
+                    MainPanel.Controls.Remove(button_missedCell);
+                    MainPanel.Controls.Remove(button_hitCell);
+                    MainPanel.Controls.Remove(label_freeCell);
+                    MainPanel.Controls.Remove(label_occupiedCell);
+                    MainPanel.Controls.Remove(label_missedCell);
+                    MainPanel.Controls.Remove(label_hitCell);
+                    MainPanel.Controls.Remove(label_title);
+                    MainPanel.Controls.Remove(button_start);
+                    MainPanel.Controls.Remove(button_restartField);
+                    MainPanel.Controls.Remove(button_avtoGenerate);
                     button_freeCell.Dispose();
                     button_occupiedCell.Dispose();
                     button_missedCell.Dispose();
@@ -231,7 +231,7 @@ namespace Pr29
                     #endregion
 
                     #region restore background image cell
-                    playerField.RestoreBackgroundImageField();
+                    //playerField.RestoreBackgroundImageField();
                     #endregion
 
                     #region initialization bot
@@ -241,7 +241,7 @@ namespace Pr29
                     //    botShips[i] = (PictureBoxExtender)Ships[i].Clone();
                     //    panel1.Controls.Add(botShips[i]);
                     //}
-                    Bot bot = new Bot(panel1, listBox1, playerField);
+                    Bot bot = new Bot(MainPanel, listBox1, playerField);
                     //bot.Shot();
                     //playerField[0,0];
                     #endregion
@@ -256,7 +256,7 @@ namespace Pr29
 
         private void button_avtoGenerate_Click(object sender, EventArgs e)
         {
-            playerField.AvtoPlaceShips(Ships);
+            playerField.AvtoPlaceShips();
             ShipCount = 0;
         }
 

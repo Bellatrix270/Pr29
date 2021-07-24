@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SeaWarsForm));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.MainPanel = new System.Windows.Forms.Panel();
+            this.PlayerShips_panel = new System.Windows.Forms.Panel();
+            this.PlayerField_panel = new System.Windows.Forms.Panel();
             this.button_restartField = new System.Windows.Forms.Button();
             this.label_occupiedCell = new System.Windows.Forms.Label();
             this.button_occupiedCell = new System.Windows.Forms.Button();
@@ -44,68 +46,54 @@
             this.button_start = new System.Windows.Forms.Button();
             this.button_avtoGenerate = new System.Windows.Forms.Button();
             this.label_title = new System.Windows.Forms.Label();
-            this.ship_four_cell = new Pr29.PictureBoxExtender();
-            this.ship_three_cell2 = new Pr29.PictureBoxExtender();
-            this.ship_three_cell = new Pr29.PictureBoxExtender();
-            this.ship_two_cell3 = new Pr29.PictureBoxExtender();
-            this.ship_two_cell2 = new Pr29.PictureBoxExtender();
-            this.ship_two_cell = new Pr29.PictureBoxExtender();
-            this.ship_one_cell4 = new Pr29.PictureBoxExtender();
-            this.ship_one_cell3 = new Pr29.PictureBoxExtender();
-            this.ship_one_cell2 = new Pr29.PictureBoxExtender();
-            this.ship_one_cell = new Pr29.PictureBoxExtender();
             this.PictureBox_SelectedShip = new Pr29.PictureBoxExtender();
             this.pictureBoxExtender1 = new Pr29.PictureBoxExtender();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_four_cell)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_three_cell2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_three_cell)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_two_cell3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_two_cell2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_two_cell)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell)).BeginInit();
+            this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SelectedShip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExtender1)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // MainPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.BackgroundImage = global::Pr29.ResourceImages.Background_for_SeaWarsV3;
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.panel1.Controls.Add(this.button_restartField);
-            this.panel1.Controls.Add(this.label_occupiedCell);
-            this.panel1.Controls.Add(this.button_occupiedCell);
-            this.panel1.Controls.Add(this.label_freeCell);
-            this.panel1.Controls.Add(this.button_freeCell);
-            this.panel1.Controls.Add(this.label_hitCell);
-            this.panel1.Controls.Add(this.button_hitCell);
-            this.panel1.Controls.Add(this.label_missedCell);
-            this.panel1.Controls.Add(this.label2);
-            this.panel1.Controls.Add(this.ship_four_cell);
-            this.panel1.Controls.Add(this.ship_three_cell2);
-            this.panel1.Controls.Add(this.ship_three_cell);
-            this.panel1.Controls.Add(this.ship_two_cell3);
-            this.panel1.Controls.Add(this.ship_two_cell2);
-            this.panel1.Controls.Add(this.ship_two_cell);
-            this.panel1.Controls.Add(this.ship_one_cell4);
-            this.panel1.Controls.Add(this.ship_one_cell3);
-            this.panel1.Controls.Add(this.ship_one_cell2);
-            this.panel1.Controls.Add(this.ship_one_cell);
-            this.panel1.Controls.Add(this.PictureBox_SelectedShip);
-            this.panel1.Controls.Add(this.pictureBoxExtender1);
-            this.panel1.Controls.Add(this.listBox1);
-            this.panel1.Controls.Add(this.button_missedCell);
-            this.panel1.Controls.Add(this.button_start);
-            this.panel1.Controls.Add(this.button_avtoGenerate);
-            this.panel1.Controls.Add(this.label_title);
-            this.panel1.Location = new System.Drawing.Point(1, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1289, 705);
-            this.panel1.TabIndex = 4;
+            this.MainPanel.BackColor = System.Drawing.Color.Transparent;
+            this.MainPanel.BackgroundImage = global::Pr29.ResourceImages.Background_for_SeaWarsV3;
+            this.MainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.MainPanel.Controls.Add(this.button_restartField);
+            this.MainPanel.Controls.Add(this.label_occupiedCell);
+            this.MainPanel.Controls.Add(this.button_occupiedCell);
+            this.MainPanel.Controls.Add(this.label_freeCell);
+            this.MainPanel.Controls.Add(this.button_freeCell);
+            this.MainPanel.Controls.Add(this.label_hitCell);
+            this.MainPanel.Controls.Add(this.button_hitCell);
+            this.MainPanel.Controls.Add(this.label_missedCell);
+            this.MainPanel.Controls.Add(this.label2);
+            this.MainPanel.Controls.Add(this.PictureBox_SelectedShip);
+            this.MainPanel.Controls.Add(this.pictureBoxExtender1);
+            this.MainPanel.Controls.Add(this.listBox1);
+            this.MainPanel.Controls.Add(this.button_missedCell);
+            this.MainPanel.Controls.Add(this.button_start);
+            this.MainPanel.Controls.Add(this.button_avtoGenerate);
+            this.MainPanel.Controls.Add(this.label_title);
+            this.MainPanel.Controls.Add(this.PlayerField_panel);
+            this.MainPanel.Controls.Add(this.PlayerShips_panel);
+            this.MainPanel.Location = new System.Drawing.Point(0, 1);
+            this.MainPanel.Name = "MainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(1289, 705);
+            this.MainPanel.TabIndex = 4;
+            // 
+            // PlayerShips_panel
+            // 
+            this.PlayerShips_panel.Location = new System.Drawing.Point(644, 23);
+            this.PlayerShips_panel.Name = "PlayerShips_panel";
+            this.PlayerShips_panel.Size = new System.Drawing.Size(207, 595);
+            this.PlayerShips_panel.TabIndex = 44;
+            // 
+            // PlayerField_panel
+            // 
+            this.PlayerField_panel.Location = new System.Drawing.Point(0, 1);
+            this.PlayerField_panel.Name = "PlayerField_panel";
+            this.PlayerField_panel.Size = new System.Drawing.Size(648, 617);
+            this.PlayerField_panel.TabIndex = 43;
             // 
             // button_restartField
             // 
@@ -215,7 +203,7 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(232, 602);
+            this.listBox1.Location = new System.Drawing.Point(231, 620);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(212, 56);
             this.listBox1.TabIndex = 21;
@@ -276,171 +264,11 @@
             this.label_title.TabIndex = 15;
             this.label_title.Text = "Расставте корабли";
             // 
-            // ship_four_cell
-            // 
-            this.ship_four_cell.A_RotationImage = global::Pr29.ResourceImages.Ship4_for_SeaWars;
-            this.ship_four_cell.Image = ((System.Drawing.Image)(resources.GetObject("ship_four_cell.Image")));
-            this.ship_four_cell.Location = new System.Drawing.Point(676, 140);
-            this.ship_four_cell.Name = "ship_four_cell";
-            this.ship_four_cell.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_four_cell.Rotation = 0F;
-            this.ship_four_cell.ShipSize = 0;
-            this.ship_four_cell.Size = new System.Drawing.Size(203, 55);
-            this.ship_four_cell.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_four_cell.TabIndex = 33;
-            this.ship_four_cell.TabStop = false;
-            this.ship_four_cell.Tag = "4";
-            this.ship_four_cell.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_three_cell2
-            // 
-            this.ship_three_cell2.A_RotationImage = global::Pr29.ResourceImages.Ship3_for_SeaWars;
-            this.ship_three_cell2.Image = ((System.Drawing.Image)(resources.GetObject("ship_three_cell2.Image")));
-            this.ship_three_cell2.Location = new System.Drawing.Point(676, 209);
-            this.ship_three_cell2.Name = "ship_three_cell2";
-            this.ship_three_cell2.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_three_cell2.Rotation = 0F;
-            this.ship_three_cell2.ShipSize = 0;
-            this.ship_three_cell2.Size = new System.Drawing.Size(164, 34);
-            this.ship_three_cell2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_three_cell2.TabIndex = 32;
-            this.ship_three_cell2.TabStop = false;
-            this.ship_three_cell2.Tag = "3";
-            this.ship_three_cell2.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_three_cell
-            // 
-            this.ship_three_cell.A_RotationImage = global::Pr29.ResourceImages.Ship3_for_SeaWars;
-            this.ship_three_cell.Image = ((System.Drawing.Image)(resources.GetObject("ship_three_cell.Image")));
-            this.ship_three_cell.Location = new System.Drawing.Point(676, 257);
-            this.ship_three_cell.Name = "ship_three_cell";
-            this.ship_three_cell.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_three_cell.Rotation = 0F;
-            this.ship_three_cell.ShipSize = 0;
-            this.ship_three_cell.Size = new System.Drawing.Size(164, 34);
-            this.ship_three_cell.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_three_cell.TabIndex = 31;
-            this.ship_three_cell.TabStop = false;
-            this.ship_three_cell.Tag = "3";
-            this.ship_three_cell.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_two_cell3
-            // 
-            this.ship_two_cell3.A_RotationImage = global::Pr29.ResourceImages.Ship2_for_SeaWars;
-            this.ship_two_cell3.Image = ((System.Drawing.Image)(resources.GetObject("ship_two_cell3.Image")));
-            this.ship_two_cell3.Location = new System.Drawing.Point(676, 305);
-            this.ship_two_cell3.Name = "ship_two_cell3";
-            this.ship_two_cell3.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_two_cell3.Rotation = 0F;
-            this.ship_two_cell3.ShipSize = 0;
-            this.ship_two_cell3.Size = new System.Drawing.Size(104, 39);
-            this.ship_two_cell3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_two_cell3.TabIndex = 30;
-            this.ship_two_cell3.TabStop = false;
-            this.ship_two_cell3.Tag = "2";
-            this.ship_two_cell3.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_two_cell2
-            // 
-            this.ship_two_cell2.A_RotationImage = global::Pr29.ResourceImages.Ship2_for_SeaWars;
-            this.ship_two_cell2.Image = ((System.Drawing.Image)(resources.GetObject("ship_two_cell2.Image")));
-            this.ship_two_cell2.Location = new System.Drawing.Point(676, 358);
-            this.ship_two_cell2.Name = "ship_two_cell2";
-            this.ship_two_cell2.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_two_cell2.Rotation = 0F;
-            this.ship_two_cell2.ShipSize = 0;
-            this.ship_two_cell2.Size = new System.Drawing.Size(104, 39);
-            this.ship_two_cell2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_two_cell2.TabIndex = 29;
-            this.ship_two_cell2.TabStop = false;
-            this.ship_two_cell2.Tag = "2";
-            this.ship_two_cell2.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_two_cell
-            // 
-            this.ship_two_cell.A_RotationImage = global::Pr29.ResourceImages.Ship2_for_SeaWars;
-            this.ship_two_cell.Image = ((System.Drawing.Image)(resources.GetObject("ship_two_cell.Image")));
-            this.ship_two_cell.Location = new System.Drawing.Point(676, 411);
-            this.ship_two_cell.Name = "ship_two_cell";
-            this.ship_two_cell.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_two_cell.Rotation = 0F;
-            this.ship_two_cell.ShipSize = 0;
-            this.ship_two_cell.Size = new System.Drawing.Size(104, 39);
-            this.ship_two_cell.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_two_cell.TabIndex = 28;
-            this.ship_two_cell.TabStop = false;
-            this.ship_two_cell.Tag = "2";
-            this.ship_two_cell.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_one_cell4
-            // 
-            this.ship_one_cell4.A_RotationImage = global::Pr29.ResourceImages.Ship1_for_SeaWars;
-            this.ship_one_cell4.Image = ((System.Drawing.Image)(resources.GetObject("ship_one_cell4.Image")));
-            this.ship_one_cell4.Location = new System.Drawing.Point(676, 584);
-            this.ship_one_cell4.Name = "ship_one_cell4";
-            this.ship_one_cell4.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_one_cell4.Rotation = 0F;
-            this.ship_one_cell4.ShipSize = 0;
-            this.ship_one_cell4.Size = new System.Drawing.Size(50, 26);
-            this.ship_one_cell4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_one_cell4.TabIndex = 27;
-            this.ship_one_cell4.TabStop = false;
-            this.ship_one_cell4.Tag = "1";
-            this.ship_one_cell4.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_one_cell3
-            // 
-            this.ship_one_cell3.A_RotationImage = global::Pr29.ResourceImages.Ship1_for_SeaWars;
-            this.ship_one_cell3.Image = ((System.Drawing.Image)(resources.GetObject("ship_one_cell3.Image")));
-            this.ship_one_cell3.Location = new System.Drawing.Point(676, 544);
-            this.ship_one_cell3.Name = "ship_one_cell3";
-            this.ship_one_cell3.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_one_cell3.Rotation = 0F;
-            this.ship_one_cell3.ShipSize = 0;
-            this.ship_one_cell3.Size = new System.Drawing.Size(50, 26);
-            this.ship_one_cell3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_one_cell3.TabIndex = 26;
-            this.ship_one_cell3.TabStop = false;
-            this.ship_one_cell3.Tag = "1";
-            this.ship_one_cell3.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_one_cell2
-            // 
-            this.ship_one_cell2.A_RotationImage = global::Pr29.ResourceImages.Ship1_for_SeaWars;
-            this.ship_one_cell2.Image = ((System.Drawing.Image)(resources.GetObject("ship_one_cell2.Image")));
-            this.ship_one_cell2.Location = new System.Drawing.Point(676, 504);
-            this.ship_one_cell2.Name = "ship_one_cell2";
-            this.ship_one_cell2.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_one_cell2.Rotation = 0F;
-            this.ship_one_cell2.ShipSize = 0;
-            this.ship_one_cell2.Size = new System.Drawing.Size(50, 26);
-            this.ship_one_cell2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_one_cell2.TabIndex = 25;
-            this.ship_one_cell2.TabStop = false;
-            this.ship_one_cell2.Tag = "1";
-            this.ship_one_cell2.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
-            // ship_one_cell
-            // 
-            this.ship_one_cell.A_RotationImage = global::Pr29.ResourceImages.Ship1_for_SeaWars;
-            this.ship_one_cell.Image = ((System.Drawing.Image)(resources.GetObject("ship_one_cell.Image")));
-            this.ship_one_cell.Location = new System.Drawing.Point(676, 464);
-            this.ship_one_cell.Name = "ship_one_cell";
-            this.ship_one_cell.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.ship_one_cell.Rotation = 0F;
-            this.ship_one_cell.ShipSize = 0;
-            this.ship_one_cell.Size = new System.Drawing.Size(50, 26);
-            this.ship_one_cell.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.ship_one_cell.TabIndex = 24;
-            this.ship_one_cell.TabStop = false;
-            this.ship_one_cell.Tag = "1";
-            this.ship_one_cell.Click += new System.EventHandler(this.SetSeclectedShip);
-            // 
             // PictureBox_SelectedShip
             // 
             this.PictureBox_SelectedShip.A_RotationImage = null;
             this.PictureBox_SelectedShip.Enabled = false;
-            this.PictureBox_SelectedShip.Location = new System.Drawing.Point(841, 471);
+            this.PictureBox_SelectedShip.Location = new System.Drawing.Point(861, 471);
             this.PictureBox_SelectedShip.Name = "PictureBox_SelectedShip";
             this.PictureBox_SelectedShip.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
             this.PictureBox_SelectedShip.Rotation = 0F;
@@ -472,24 +300,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1289, 681);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.MainPanel);
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "SeaWarsForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "SeaWarsForm";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_four_cell)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_three_cell2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_three_cell)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_two_cell3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_two_cell2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_two_cell)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ship_one_cell)).EndInit();
+            this.MainPanel.ResumeLayout(false);
+            this.MainPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SelectedShip)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExtender1)).EndInit();
             this.ResumeLayout(false);
@@ -521,7 +339,7 @@
                 cell.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
                 cell.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
                 //cell.Click += new System.EventHandler( (object sender, System.EventArgs e)=> { isplaying = true; });
-                panel1.Controls.Add(cell);
+                MainPanel.Controls.Add(cell);
             }
 
             for (int i = 0; i < mapsize; i++)
@@ -541,29 +359,19 @@
                     cell.MouseMove += new System.Windows.Forms.MouseEventHandler(Cell_mouseMove);
                     ButtonsCell[i, j] = cell;
                     ButtonsLocation.Add(cell.Location);
-                    panel1.Controls.Add(cell);
+                    MainPanel.Controls.Add(cell);
                 }
             }
         }
 
         #endregion
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel MainPanel;
         private System.Windows.Forms.Label label_title;
         private System.Windows.Forms.Button button_start;
         private System.Windows.Forms.Button button_avtoGenerate;
         private System.Windows.Forms.Button button_missedCell;
         private PictureBoxExtender pictureBoxExtender1;
         private PictureBoxExtender PictureBox_SelectedShip;
-        private PictureBoxExtender ship_one_cell4;
-        private PictureBoxExtender ship_one_cell3;
-        private PictureBoxExtender ship_one_cell2;
-        private PictureBoxExtender ship_one_cell;
-        private PictureBoxExtender ship_four_cell;
-        private PictureBoxExtender ship_three_cell2;
-        private PictureBoxExtender ship_three_cell;
-        private PictureBoxExtender ship_two_cell3;
-        private PictureBoxExtender ship_two_cell2;
-        private PictureBoxExtender ship_two_cell;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label_hitCell;
         private System.Windows.Forms.Button button_hitCell;
@@ -574,5 +382,7 @@
         private System.Windows.Forms.Button button_freeCell;
         private System.Windows.Forms.Button button_restartField;
         public System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Panel PlayerField_panel;
+        private System.Windows.Forms.Panel PlayerShips_panel;
     }
 }
