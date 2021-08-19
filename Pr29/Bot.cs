@@ -10,7 +10,7 @@ namespace Pr29
     /// <summary>
     /// Бот для игры в морской, со своим игровым полем.
     /// </summary>
-    class Bot : BotSeaField
+    class Bot
     {
         public int lifeShip = 10;
 
@@ -19,12 +19,12 @@ namespace Pr29
         BotSeaField targetMap;
         PictureBoxExtender[] ships = new PictureBoxExtender[10];
 
-        public Bot(System.Windows.Forms.Control panel, System.Windows.Forms.ListBox console, BotSeaField targetMap)
+        public Bot(System.Windows.Forms.Control panel, System.Windows.Forms.ListBox console, PlayerSeaField targetMap)
         {
             Map = new BotSeaField(10, panel, console);
             Map.CreateMap();
-            ships = Ships;
-            Map.AvtoPlaceShips();
+            Map.AvtoPlaceShips(new Point(54, -54));
+            Map.ActivateButtonsCell();
 
             this.targetMap = targetMap;
 
@@ -34,16 +34,29 @@ namespace Pr29
             //getInfoAboutShip(0);
         }
 
-        public void Shot()
+        private Point ChooseCellOnHit()
+        {
+            return FreeCellPosition[new Random().Next(FreeCellPosition.Count)];
+        }
+
+        public bool Shot()
         {
             bool hit = false;
-            Point shotCell = FreeCellPosition[new Random().Next(FreeCellPosition.Count)];
+            Point shotCell = ChooseCellOnHit();
             FreeCellPosition.Remove(shotCell);
-            targetMap.ChangeBackgroundImage(shotCell, ResourceImages.hit_cell_for_SWV2);
-            if (targetMap.Map[0,0] == 1)
+            if (targetMap.IsShipOnCell[0,0])
             {
-
+                hit = true;
+                targetMap.ChangeBackgroundImage(shotCell, ResourceImages.hit_cell_for_SWV2);
             }
+            else
+            {
+                hit = false;
+                targetMap.ChangeBackgroundImage(shotCell, ResourceImages.missed_cell_for_SWV2);
+            }
+
+            return hit;
         }
+
     }
 }

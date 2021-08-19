@@ -33,24 +33,12 @@ namespace Pr29
         int CountRotation;
         Point cell;
 
-        BotSeaField playerField;
+        PlayerSeaField playerField;
 
         public SeaWarsForm()
         {
             InitializeComponent();
 
-            // Добовляем первые 10 элментов класса PictureBoxExtender в массив кораблей.
-            int i = 0;
-            foreach (var item in MainPanel.Controls)
-            {
-                if (item is PictureBoxExtender && i < 10)
-                {
-                    Ships[i] = item as PictureBoxExtender;
-                    i++;
-                }
-            }
-
-            //CreatePlayerMap();
             KeyUp += new KeyEventHandler(KeyRotate);
 
             PictureBox PictureBox_AnyShip = new PictureBox
@@ -66,8 +54,6 @@ namespace Pr29
             playerField = new PlayerSeaField(10, PlayerField_panel, PlayerShips_panel, PictureBox_SelectedShip);
             playerField.CreateMap();
 
-            //ship_two_cell3.Image = RotateImage(ship_two_cell3.Image, 270, true, false, Color.White);
-            //pictureBoxExtender1.Image = RotateImage(pictureBoxExtender1.Image, 90, true, false, Color.Transparent);
         }
 
         private void KeyRotate(object sender, KeyEventArgs e)
@@ -88,110 +74,6 @@ namespace Pr29
             }
         }
 
-        private void ChageSelectedShipLocation(int offsetX, int offsetY)
-        {
-            switch (ShipRotation)
-            {  
-                case 0: 
-                     PictureBox_SelectedShip.Location = new Point(offsetX, offsetY + 7);
-                    break;
-                case 90:
-                    PictureBox_SelectedShip.Location = new Point(offsetX + 7, offsetY);
-                    break;
-                case 180:
-                    PictureBox_SelectedShip.Location = new Point(offsetX - cellSize * (ShipSize - 1), offsetY + 7);
-                    break;
-                default:
-                    PictureBox_SelectedShip.Location = new Point(offsetX + 7, offsetY - cellSize * (ShipSize - 1));
-                    break;
-            }
-        }
-
-        public void SetSeclectedShip(object sender, EventArgs e)
-        {
-            SelectedImg = sender as PictureBoxExtender; // Перемещение ссылки на PictureBox в переменную.
-            SelectedImg.A_RotationImage = SelectedImg.Image;
-            PictureBox_SelectedShip.Image = SelectedImg.Image;
-            PictureBox_SelectedShip.A_RotationImage = SelectedImg.Image;
-            // Для оптимизации можно попробовать сделать получение данных, как в методе PlaceShip.
-            // Свойство Tag можно перевести в int в Designer.cs.
-            ShipSize = Convert.ToInt32(sender.GetType().GetProperty("Tag").GetValue(sender));
-        }
-
-        public void PlaceShip(object sender, EventArgs e)
-        {
-            Button pressedButton = sender as Button;
-            if (!isPlaying && ShipCount > 0)
-            {
-                ShipCount--;
-                pressedButton.Enabled = false;
-                // PictureBox устанавливать тег кораблей и в цикле, учитывая поворот, заполнять поле.
-                for (int i = 0; i < ShipSize; i++)
-                {
-                    switch (ShipRotation)
-                    {
-                        case 0:
-                            playerMap[((pressedButton.Location.X / cellSize) - 1) + i, pressedButton.Location.Y / cellSize] = 1;
-                            break;
-                        case 90:
-                            playerMap[(pressedButton.Location.X / cellSize) - 1, (pressedButton.Location.Y / cellSize) + i] = 1;
-                            break;
-                        case 180:
-                            playerMap[((pressedButton.Location.X / cellSize) - 1) + (-i), pressedButton.Location.Y / cellSize] = 1;
-                            break;
-                        default:
-                            playerMap[(pressedButton.Location.X / cellSize) - 1, (pressedButton.Location.Y / cellSize) + (-i)] = 1;
-                            break;
-                    }
-                }
-                SelectedImg.Location = PictureBox_SelectedShip.Location;
-                SelectedImg.Rotation = ShipRotation;
-                SelectedImg = null;
-                PictureBox_SelectedShip.Image = new Bitmap(1,1);
-                PictureBox_SelectedShip.A_RotationImage = new Bitmap(1,1);
-                // Есть идея. Вызывать эту функцию до расположения коробля.
-                playerField.FindAnchorPoints(pressedButton.Location,ShipRotation, ShipSize, out Point start, out Point end);
-                playerField.FillAnchorPoints(start, end);
-                //SelectedImg.Size = new Size(104, 39);
-                //ship_four_cell.Location = new Point (pressedButton.Location.X, pressedButton.Location.Y+9);
-                MessageBox.Show("Player Map" + (pressedButton.Location.X / cellSize - 1) + ";" + pressedButton.Location.Y / cellSize + "= 1");
-            }
-        }
-
-        private void Cell_mouseMove(object sender, MouseEventArgs e)
-        {
-            cell = (Point)sender.GetType().GetProperty("Location").GetValue(sender);
-            ChageSelectedShipLocation(cell.X, cell.Y);
-
-            if (playerField.IsLeaveField(cell, ShipRotation, ShipSize))
-                ShipRotation += 90;
-
-            if (!playerField.IsEmptyCellsAround(cell,ShipSize))
-            {
-                int rotation = ShipRotation;
-                Point newCell = playerField.SearchEmptyPoint(ref rotation, ShipSize);
-                ShipRotation = rotation;
-                int newRotation = GetRandom(0,90,180,270);
-
-                PictureBox_SelectedShip.Location = newCell;
-                
-
-                listBox1.Items.Add(newCell);
-                listBox1.Items.Add(GetIndexButton(newCell, 0));
-                listBox1.Items.Add(GetIndexButton(newCell, 1));
-
-                Cursor.Position = PointToScreen(newCell);
-
-                listBox1.Items.Add("Позиция курсора" + Cursor.Position);
-            }
-
-            if (!playerField.IsEmptyCellOnDerection(cell, ShipRotation, ShipSize)) // Упростить функцию на две, для лучший читабельности. 
-                                                               // Проверка ячеек и защита от выхода за границы поля.
-            {
-                ShipRotation += 90;
-            }
-        }
-
         private void button_start_Click(object sender, EventArgs e)
         {
             if (ShipCount < 0)
@@ -204,6 +86,7 @@ namespace Pr29
                     == DialogResult.Yes)
                 {
                     #region delete tutorial buttons
+                    MainPanel.Controls.Remove(PlayerShips_panel);
                     MainPanel.Controls.Remove(button_freeCell);
                     MainPanel.Controls.Remove(button_occupiedCell);
                     MainPanel.Controls.Remove(button_missedCell);
@@ -216,6 +99,7 @@ namespace Pr29
                     MainPanel.Controls.Remove(button_start);
                     MainPanel.Controls.Remove(button_restartField);
                     MainPanel.Controls.Remove(button_avtoGenerate);
+                    PlayerShips_panel.Dispose();
                     button_freeCell.Dispose();
                     button_occupiedCell.Dispose();
                     button_missedCell.Dispose();
@@ -231,7 +115,7 @@ namespace Pr29
                     #endregion
 
                     #region restore background image cell
-                    //playerField.RestoreBackgroundImageField();
+                    playerField.RestoreBackgroundImageField();
                     #endregion
 
                     #region initialization bot
@@ -242,7 +126,7 @@ namespace Pr29
                     //    panel1.Controls.Add(botShips[i]);
                     //}
                     Bot bot = new Bot(MainPanel, listBox1, playerField);
-                    //bot.Shot();
+                    bot.Shot();
                     //playerField[0,0];
                     #endregion
                 }
@@ -256,7 +140,7 @@ namespace Pr29
 
         private void button_avtoGenerate_Click(object sender, EventArgs e)
         {
-            playerField.AvtoPlaceShips();
+            playerField.AvtoPlaceShips(new Point(54,54));
             ShipCount = 0;
         }
 
@@ -270,66 +154,6 @@ namespace Pr29
             return arr[new Random().Next(arr.Length)];
         }
 
-        private void FullNearCell(int i, int j)
-        {
-            if (playerMap[i - 1, j] == 0)
-            {
-                playerMap[i - 1, j] = 2;
-                ButtonsCell[i - 1, j].Enabled = false;
-            }
-            if (playerMap[i, j - 1] == 0)
-            {
-                playerMap[i, j - 1] = 2;
-                ButtonsCell[i, j - 1].Enabled = false;
-            }
-            if (playerMap[i, j + 1] == 0)
-            {
-                playerMap[i, j + 1] = 2;
-                ButtonsCell[i, j + 1].Enabled = false;
-            }
-            if (playerMap[i + 1, j] == 0)
-            {
-                playerMap[i + 1, j] = 2;
-                ButtonsCell[i + 1, j].Enabled = false;
-            }
-        }
-
-        /// <summary>
-        /// Находит идекс массива кнопок поля.
-        /// </summary>
-        /// <param name="button">Позиция кнопки</param>
-        /// <param name="demension">Индекс измерения</param>
-        /// <returns>Возвращает индекс первого измерения, если входной параметр равен 0 и индекс второго измерения, если идекс равен 1.</returns>
-        private int GetIndexButton (Point button, int demension)
-        {
-            int indexI = button.X / cellSize - 1;
-            int indexJ = button.Y / cellSize;
-
-            return (demension == 0) ? indexI  : indexJ;
-        }
-
-        private void GetIndexButton(Point button, out int indexI, out int indexJ)
-        {
-            indexI = button.X / cellSize - 1;
-            indexJ = button.Y / cellSize;
-
-        }
-
-        private void ship_four_cell_MouseMove(object sender, MouseEventArgs e)
-        {
-            //if (status)
-            //ship_four_cell.Location = new Point((Cursor.Position.X - this.Location.X), (Cursor.Position.Y - this.Location.Y));
-        }
-
-        private void ship_four_cell_MouseUp(object sender, MouseEventArgs e)
-        {
-            status = false;
-        }
-
-        private void ship_four_cell_MouseDown(object sender, MouseEventArgs e)
-        {
-            status = true;
-        }
     }
 
 }

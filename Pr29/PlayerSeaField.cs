@@ -16,6 +16,7 @@ namespace Pr29
     {
         private PictureBoxExtender PictureBox_SelectedShip;
         PictureBoxExtender SelectedImg;
+        Control Ships_panel;
         Point cell;
         private int ShipSize;
         private int ShipCount = 10; // Количество не раставленных кораблей.
@@ -24,6 +25,7 @@ namespace Pr29
             get { return (int)PictureBox_SelectedShip.Rotation; }
             set { PictureBox_SelectedShip.Rotation = value; }
         }
+        //public bool LastShootIsHit { get; private set; }
 
         public override void CreateMap()
         {
@@ -58,7 +60,7 @@ namespace Pr29
             {
                 for (int j = 0; j < mapSize; j++)
                 {
-                    Map[i, j] = 0;
+                    IsShipOnCell[i, j] = false;
                     Button cell = new Button();
                     cell.Location = new Point(i * CELL_SIZE + 67, j * CELL_SIZE + 50);
                     cell.Size = new Size(CELL_SIZE, CELL_SIZE);
@@ -96,12 +98,13 @@ namespace Pr29
         {
             this.mapSize = mapSize;
             this.panel = panel;
-            Map = new int[mapSize, mapSize];
+            this.Ships_panel = Ships_panel;
+            IsShipOnCell = new bool[mapSize, mapSize];
             ButtonsCell = new Button[mapSize, mapSize];
 
             this.PictureBox_SelectedShip = PictureBox_SelectedShip;
 
-            InitializeShips(Ships_panel, new Point(0, 75), 75);
+            InitializeShips(this.Ships_panel, new Point(0, 75), 10);
 
         }
 
@@ -129,21 +132,24 @@ namespace Pr29
                     switch (ShipRotation)
                     {
                         case 0:
-                            Map[((pressedButton.Location.X / CELL_SIZE) - 1) + i, pressedButton.Location.Y / CELL_SIZE] = 1;
+                            IsShipOnCell[((pressedButton.Location.X / CELL_SIZE) - 1) + i, pressedButton.Location.Y / CELL_SIZE] = true;
                             break;
                         case 90:
-                            Map[(pressedButton.Location.X / CELL_SIZE) - 1, (pressedButton.Location.Y / CELL_SIZE) + i] = 1;
+                            IsShipOnCell[(pressedButton.Location.X / CELL_SIZE) - 1, (pressedButton.Location.Y / CELL_SIZE) + i] = true;
                             break;
                         case 180:
-                            Map[((pressedButton.Location.X / CELL_SIZE) - 1) + (-i), pressedButton.Location.Y / CELL_SIZE] = 1;
+                            IsShipOnCell[((pressedButton.Location.X / CELL_SIZE) - 1) + (-i), pressedButton.Location.Y / CELL_SIZE] = true;
                             break;
                         default:
-                            Map[(pressedButton.Location.X / CELL_SIZE) - 1, (pressedButton.Location.Y / CELL_SIZE) + (-i)] = 1;
+                            IsShipOnCell[(pressedButton.Location.X / CELL_SIZE) - 1, (pressedButton.Location.Y / CELL_SIZE) + (-i)] = true;
                             break;
                     }
                 }
+                Ships_panel.Controls.Remove(SelectedImg);
+                panel.Controls.Add(SelectedImg);
                 SelectedImg.Location = PictureBox_SelectedShip.Location;
                 SelectedImg.Rotation = ShipRotation;
+                SelectedImg.BringToFront();
                 SelectedImg = null;
                 PictureBox_SelectedShip.Image = new Bitmap(1, 1);
                 PictureBox_SelectedShip.A_RotationImage = new Bitmap(1, 1);
@@ -156,6 +162,25 @@ namespace Pr29
             }
         }
 
+        public override void AvtoPlaceShips(Point indent)
+        {
+            //foreach (PictureBoxExtender Ship in Ships)
+            //{
+            //    Ships_panel.Controls.Remove(Ship);
+            //    panel.Controls.Add(Ship);
+            //    Ship.BringToFront();
+            //}
+
+            for (int i = 0; i < Ships.Length; i++)
+            {
+                Ships_panel.Controls.Remove(Ships[i]);
+                panel.Controls.Add(Ships[i]);
+                Ships[i].BringToFront();
+            }
+
+            base.AvtoPlaceShips(indent);
+        }
+
         public void RestoreBackgroundImageField()
         {
             for (int i = 0; i < mapSize; i++)
@@ -163,6 +188,7 @@ namespace Pr29
                 for (int j = 0; j < mapSize; j++)
                 {
                     ButtonsCell[i, j].BackgroundImage = ResourceImages.Cell_for_SeaWars;
+                    ButtonsCell[i, j].Enabled = false;
                     ButtonsCell[i, j].Click -= new EventHandler(PlaceShip);
                     ButtonsCell[i, j].MouseMove -= new MouseEventHandler(Cell_mouseMove);
                 }
@@ -219,6 +245,12 @@ namespace Pr29
             {
                 ShipRotation += 90;
             }
+        }
+
+        protected override void GetIndexButton(Point button, out int indexI, out int indexJ)
+        {
+            indexI = button.X / CELL_SIZE - 1;
+            indexJ = button.Y / CELL_SIZE;
         }
     }
 }

@@ -30,8 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SeaWarsForm));
             this.MainPanel = new System.Windows.Forms.Panel();
-            this.PlayerShips_panel = new System.Windows.Forms.Panel();
-            this.PlayerField_panel = new System.Windows.Forms.Panel();
             this.button_restartField = new System.Windows.Forms.Button();
             this.label_occupiedCell = new System.Windows.Forms.Label();
             this.button_occupiedCell = new System.Windows.Forms.Button();
@@ -46,11 +44,13 @@
             this.button_start = new System.Windows.Forms.Button();
             this.button_avtoGenerate = new System.Windows.Forms.Button();
             this.label_title = new System.Windows.Forms.Label();
-            this.PictureBox_SelectedShip = new Pr29.PictureBoxExtender();
+            this.PlayerShips_panel = new System.Windows.Forms.Panel();
+            this.PlayerField_panel = new System.Windows.Forms.Panel();
             this.pictureBoxExtender1 = new Pr29.PictureBoxExtender();
+            this.PictureBox_SelectedShip = new Pr29.PictureBoxExtender();
             this.MainPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SelectedShip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExtender1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SelectedShip)).BeginInit();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -58,6 +58,7 @@
             this.MainPanel.BackColor = System.Drawing.Color.Transparent;
             this.MainPanel.BackgroundImage = global::Pr29.ResourceImages.Background_for_SeaWarsV3;
             this.MainPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.MainPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.MainPanel.Controls.Add(this.button_restartField);
             this.MainPanel.Controls.Add(this.label_occupiedCell);
             this.MainPanel.Controls.Add(this.button_occupiedCell);
@@ -67,40 +68,26 @@
             this.MainPanel.Controls.Add(this.button_hitCell);
             this.MainPanel.Controls.Add(this.label_missedCell);
             this.MainPanel.Controls.Add(this.label2);
-            this.MainPanel.Controls.Add(this.PictureBox_SelectedShip);
             this.MainPanel.Controls.Add(this.pictureBoxExtender1);
             this.MainPanel.Controls.Add(this.listBox1);
             this.MainPanel.Controls.Add(this.button_missedCell);
             this.MainPanel.Controls.Add(this.button_start);
             this.MainPanel.Controls.Add(this.button_avtoGenerate);
             this.MainPanel.Controls.Add(this.label_title);
-            this.MainPanel.Controls.Add(this.PlayerField_panel);
+            this.MainPanel.Controls.Add(this.PictureBox_SelectedShip);
             this.MainPanel.Controls.Add(this.PlayerShips_panel);
+            this.MainPanel.Controls.Add(this.PlayerField_panel);
             this.MainPanel.Location = new System.Drawing.Point(0, 1);
             this.MainPanel.Name = "MainPanel";
             this.MainPanel.Size = new System.Drawing.Size(1289, 705);
             this.MainPanel.TabIndex = 4;
-            // 
-            // PlayerShips_panel
-            // 
-            this.PlayerShips_panel.Location = new System.Drawing.Point(644, 23);
-            this.PlayerShips_panel.Name = "PlayerShips_panel";
-            this.PlayerShips_panel.Size = new System.Drawing.Size(207, 595);
-            this.PlayerShips_panel.TabIndex = 44;
-            // 
-            // PlayerField_panel
-            // 
-            this.PlayerField_panel.Location = new System.Drawing.Point(0, 1);
-            this.PlayerField_panel.Name = "PlayerField_panel";
-            this.PlayerField_panel.Size = new System.Drawing.Size(648, 617);
-            this.PlayerField_panel.TabIndex = 43;
             // 
             // button_restartField
             // 
             this.button_restartField.BackgroundImage = global::Pr29.ResourceImages.Button_start;
             this.button_restartField.FlatAppearance.BorderSize = 0;
             this.button_restartField.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_restartField.Font = new System.Drawing.Font("Exo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_restartField.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_restartField.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.button_restartField.Location = new System.Drawing.Point(992, 369);
             this.button_restartField.Name = "button_restartField";
@@ -228,7 +215,7 @@
             this.button_start.BackgroundImage = global::Pr29.ResourceImages.Button_start;
             this.button_start.FlatAppearance.BorderSize = 0;
             this.button_start.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_start.Font = new System.Drawing.Font("Exo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_start.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_start.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.button_start.Location = new System.Drawing.Point(992, 285);
             this.button_start.Name = "button_start";
@@ -243,7 +230,7 @@
             this.button_avtoGenerate.BackgroundImage = global::Pr29.ResourceImages.Button_start;
             this.button_avtoGenerate.FlatAppearance.BorderSize = 0;
             this.button_avtoGenerate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button_avtoGenerate.Font = new System.Drawing.Font("Exo 2", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_avtoGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_avtoGenerate.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.button_avtoGenerate.Location = new System.Drawing.Point(992, 444);
             this.button_avtoGenerate.Name = "button_avtoGenerate";
@@ -256,27 +243,28 @@
             // label_title
             // 
             this.label_title.AutoSize = true;
-            this.label_title.Font = new System.Drawing.Font("Exo 2", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label_title.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.label_title.Location = new System.Drawing.Point(718, 35);
             this.label_title.Name = "label_title";
-            this.label_title.Size = new System.Drawing.Size(467, 57);
+            this.label_title.Size = new System.Drawing.Size(471, 55);
             this.label_title.TabIndex = 15;
             this.label_title.Text = "Расставте корабли";
             // 
-            // PictureBox_SelectedShip
+            // PlayerShips_panel
             // 
-            this.PictureBox_SelectedShip.A_RotationImage = null;
-            this.PictureBox_SelectedShip.Enabled = false;
-            this.PictureBox_SelectedShip.Location = new System.Drawing.Point(861, 471);
-            this.PictureBox_SelectedShip.Name = "PictureBox_SelectedShip";
-            this.PictureBox_SelectedShip.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
-            this.PictureBox_SelectedShip.Rotation = 0F;
-            this.PictureBox_SelectedShip.ShipSize = 0;
-            this.PictureBox_SelectedShip.Size = new System.Drawing.Size(100, 50);
-            this.PictureBox_SelectedShip.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.PictureBox_SelectedShip.TabIndex = 23;
-            this.PictureBox_SelectedShip.TabStop = false;
+            this.PlayerShips_panel.Location = new System.Drawing.Point(645, 23);
+            this.PlayerShips_panel.Name = "PlayerShips_panel";
+            this.PlayerShips_panel.Size = new System.Drawing.Size(207, 595);
+            this.PlayerShips_panel.TabIndex = 44;
+            // 
+            // PlayerField_panel
+            // 
+            this.PlayerField_panel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.PlayerField_panel.Location = new System.Drawing.Point(0, 1);
+            this.PlayerField_panel.Name = "PlayerField_panel";
+            this.PlayerField_panel.Size = new System.Drawing.Size(642, 617);
+            this.PlayerField_panel.TabIndex = 43;
             // 
             // pictureBoxExtender1
             // 
@@ -292,7 +280,20 @@
             this.pictureBoxExtender1.TabIndex = 22;
             this.pictureBoxExtender1.TabStop = false;
             this.pictureBoxExtender1.Tag = "2";
-            this.pictureBoxExtender1.Click += new System.EventHandler(this.SetSeclectedShip);
+            // 
+            // PictureBox_SelectedShip
+            // 
+            this.PictureBox_SelectedShip.A_RotationImage = null;
+            this.PictureBox_SelectedShip.Enabled = false;
+            this.PictureBox_SelectedShip.Location = new System.Drawing.Point(0, 0);
+            this.PictureBox_SelectedShip.Name = "PictureBox_SelectedShip";
+            this.PictureBox_SelectedShip.RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
+            this.PictureBox_SelectedShip.Rotation = 0F;
+            this.PictureBox_SelectedShip.ShipSize = 0;
+            this.PictureBox_SelectedShip.Size = new System.Drawing.Size(100, 50);
+            this.PictureBox_SelectedShip.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.PictureBox_SelectedShip.TabIndex = 23;
+            this.PictureBox_SelectedShip.TabStop = false;
             // 
             // SeaWarsForm
             // 
@@ -308,60 +309,10 @@
             this.Text = "SeaWarsForm";
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SelectedShip)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxExtender1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox_SelectedShip)).EndInit();
             this.ResumeLayout(false);
 
-        }
-
-        private void CreatePlayerMap()
-        {
-            char[] alphabet = { 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К' };
-            for (int i = 1; i <= mapsize*2; i++)
-            {
-                System.Windows.Forms.Button cell = new System.Windows.Forms.Button();
-                if (i % 2 == 0)
-                {
-                    cell.Location = new System.Drawing.Point((i - 1) * (cellSize / 2) + 45, 0);
-                    cell.Text = (i/2).ToString();
-                }
-                else
-                {
-                    cell.Location = new System.Drawing.Point(15, (i - 1) * (cellSize / 2) + 56);
-                    cell.Text = alphabet[i/2].ToString();
-                }
-                cell.Size = new System.Drawing.Size(cellSize-10, cellSize-10);
-                cell.BackColor = System.Drawing.Color.Transparent;
-                cell.BackgroundImage = global::Pr29.ResourceImages.Cell_for_SeaWarsV2;
-                cell.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-                cell.FlatAppearance.BorderSize = 0;
-                cell.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                cell.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-                cell.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-                //cell.Click += new System.EventHandler( (object sender, System.EventArgs e)=> { isplaying = true; });
-                MainPanel.Controls.Add(cell);
-            }
-
-            for (int i = 0; i < mapsize; i++)
-            {
-                for (int j = 0; j < mapsize; j++)
-                {
-                    playerMap[i, j] = 0;
-                    System.Windows.Forms.Button cell = new System.Windows.Forms.Button();
-                    cell.Location = new System.Drawing.Point(i*cellSize+67,j*cellSize+50);
-                    cell.Size = new System.Drawing.Size(cellSize, cellSize);
-                    cell.BackColor = System.Drawing.Color.Transparent;
-                    cell.BackgroundImage = global::Pr29.ResourceImages.Cell_for_SeaWars;
-                    cell.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-                    cell.FlatAppearance.BorderSize = 0;
-                    cell.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-                    cell.Click += new System.EventHandler(PlaceShip);
-                    cell.MouseMove += new System.Windows.Forms.MouseEventHandler(Cell_mouseMove);
-                    ButtonsCell[i, j] = cell;
-                    ButtonsLocation.Add(cell.Location);
-                    MainPanel.Controls.Add(cell);
-                }
-            }
         }
 
         #endregion

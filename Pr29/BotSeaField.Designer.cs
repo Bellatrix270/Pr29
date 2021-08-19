@@ -11,7 +11,11 @@ namespace Pr29
     partial class BotSeaField
     {
         public int i = 0;
-        protected PictureBoxExtender[] Ships = new PictureBoxExtender[10];
+
+        /// <summary>
+        /// PictureBoxExtender кораблей на игровом поле.
+        /// </summary>
+        protected PictureBoxExtender[] Ships = new PictureBoxExtender[10]; 
 
         /// <summary>
         /// Создание графических объектов (кораблей) для класса BotSeaField и его дочерних классов.
@@ -50,7 +54,7 @@ namespace Pr29
             #region ship_three_cell
             Ships[1].A_RotationImage = global::Pr29.ResourceImages.Ship3_for_SeaWars;
             Ships[1].Image = ResourceImages.Ship3_for_SeaWars;
-            Ships[1].Location = new System.Drawing.Point(0, Ships[0].Location.Y + INDENT_BETWEEN_SHIPS);
+            Ships[1].Location = new System.Drawing.Point(0, Ships[0].Location.Y + INDENT_BETWEEN_SHIPS + Ships[0].Size.Height);
             Ships[1].Name = "ship_three_cell";
             Ships[1].RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
             Ships[1].Rotation = 0F;
@@ -168,26 +172,29 @@ namespace Pr29
             #endregion
 
             #region ship_one_cell4
-            Ships[9].A_RotationImage = global::Pr29.ResourceImages.Ship1_for_SeaWars;
+            Ships[9].A_RotationImage = global::Pr29.ResourceImages.Ship1V2_for_SeaWars;
             Ships[9].Image = ResourceImages.Ship4_for_SeaWars;
             Ships[9].Location = new System.Drawing.Point(0, Ships[8].Location.Y + INDENT_BETWEEN_SHIPS);
             Ships[9].Name = "ship_one_cell4";
             Ships[9].RotateFlip = System.Drawing.RotateFlipType.RotateNoneFlipNone;
             Ships[9].Rotation = 0F;
             Ships[9].ShipSize = 0;
-            Ships[9].Size = new System.Drawing.Size(50, 26);
+            Ships[9].Size = global::Pr29.ResourceImages.Ship1V2_for_SeaWars.Size;
             Ships[9].SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             Ships[9].TabIndex = 27;
             Ships[9].TabStop = false;
             Ships[9].Tag = "1";
             #endregion
 
+            for (int i = 1; i < Ships.Length; i++)
+                Ships[i].Location = new System.Drawing.Point(Ships[0].Location.X, 
+                    Ships[i-1].Location.Y + Ships[i-1].Size.Height + INDENT_BETWEEN_SHIPS);
+
             this.panel.ResumeLayout(false);
             this.panel.PerformLayout();
 
             for (int i = 0; i < Ships.Length; i++)
                 ((System.ComponentModel.ISupportInitialize)(Ships[i])).EndInit();
-
         }
     }
 }

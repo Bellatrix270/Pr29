@@ -232,5 +232,8 @@
   <ItemGroup>
     <None Include="Resources\missed_cell_for_SWV2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ship1V2_for_SeaWars.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

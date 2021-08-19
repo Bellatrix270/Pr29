@@ -15,7 +15,7 @@ namespace Pr29
     partial class BotSeaField
     {
         protected int mapSize;
-        public int[,] Map { get; protected set; } // Двумерных массив, представляющий собой данные о расположении короблей.
+        public bool[,] IsShipOnCell { get; protected set; } // Двумерных массив, представляющий собой данные о расположении короблей.
         protected const int CELL_SIZE = 54;
         protected Control panel;
         public Button[,] ButtonsCell;
@@ -47,6 +47,7 @@ namespace Pr29
         {
             GetIndexButton(CellPoint, out int indexI, out int indexJ);
             ButtonsCell[indexI, indexJ].BackgroundImage = Image;
+            ButtonsCell[indexI, indexJ].BringToFront();
         }
 
         public void ChangeBackgroundImage(Button Cell, Bitmap Image)
@@ -69,12 +70,12 @@ namespace Pr29
         {
             this.mapSize = mapSize;
             this.panel = panel;
-            Map = new int[mapSize, mapSize];
+            IsShipOnCell = new bool[mapSize, mapSize];
             ButtonsCell = new Button[mapSize, mapSize];
 
             this.console = console;
 
-            InitializeShips(this.panel, new Point(0, 75), 75);
+            InitializeShips(this.panel, new Point(612, 75), 75);
         }
 
         public virtual void CreateMap()
@@ -113,7 +114,7 @@ namespace Pr29
             {
                 for (int j = 0; j < mapSize; j++)
                 {
-                    Map[i, j] = 0;
+                    IsShipOnCell[i, j] = false;
                     Button cell = new Button();
                     cell.Location = new Point(600 + i * CELL_SIZE + 67, j * CELL_SIZE + 50);
                     cell.Size = new Size(CELL_SIZE, CELL_SIZE);
@@ -140,14 +141,21 @@ namespace Pr29
             console.Items.Add($"{indexI};{indexJ}");
         }
 
-        public void AvtoPlaceShips()
+        public virtual void AvtoPlaceShips(Point indent)
         {
             for (int i = 0; i < Ships.Length; i++)
             {
                 //System.Threading.Thread.Sleep(1000);
                 int shipRotation = 0;
                 int shipSize = Convert.ToInt32(Ships[i].Tag); 
-                Ships[i].Location = SearchEmptyPoint(ref shipRotation, shipSize);
+                Point startPosition = SearchEmptyPoint(ref shipRotation, shipSize);
+                Ships[i].Location = startPosition;
+
+                if (startPosition.X > 650)
+                {
+                    startPosition.X -= 600;
+                    Ships[i].Visible = false;
+                }
 
                 FindAnchorPoints(Ships[i].Location, shipRotation, shipSize, out Point start, out Point end);
                 FillAnchorPoints(start, end);
@@ -170,7 +178,61 @@ namespace Pr29
                         break;
                 }
 
+                for (int j = 0; j < shipSize; j++)
+                {
+                    switch (shipRotation)
+                    {
+                        case 0:
+                            IsShipOnCell[((startPosition.X / CELL_SIZE) - 1) + j, startPosition.Y / CELL_SIZE] = true;
+                            break;
+                        case 90:
+                            IsShipOnCell[(startPosition.X / CELL_SIZE) - 1, (startPosition.Y / CELL_SIZE) + j] = true;
+                            break;
+                        case 180:
+                            IsShipOnCell[((startPosition.X / CELL_SIZE) - 1) + (-j), startPosition.Y / CELL_SIZE] = true;
+                            break;
+                        default:
+                            IsShipOnCell[(startPosition.X / CELL_SIZE) - 1, (startPosition.Y / CELL_SIZE) + (-j)] = true;
+                            break;
+                    }
+                }
+
             }
+        }
+
+        /// <summary>
+        /// Активирует ячейки поля, добавляя событие для клика по клетке.
+        /// </summary>
+        public void ActivateButtonsCell()
+        {
+            for (int i = 0; i < mapSize; i++)
+                for (int j = 0; j < mapSize; j++)
+                {
+                    ButtonsCell[i, j].BackgroundImage = ResourceImages.Cell_for_SeaWars;
+                    ButtonsCell[i, j].Enabled = true;
+                    ButtonsCell[i, j].Click += new EventHandler(PlayerHit);
+                }
+        }
+
+        private void PlayerHit(object sender, EventArgs e)
+        {
+            Button pressedButton = sender as Button;
+            int index_i = (pressedButton.Location.X - 600) / CELL_SIZE - 1;
+            int index_j = pressedButton.Location.Y / CELL_SIZE;
+
+            if (IsShipOnCell[index_i, index_j])
+            {
+                MessageBox.Show("Есть попадание");
+                pressedButton.BackgroundImage = ResourceImages.hit_cell_for_SWV2;
+            }
+            else
+            {
+                MessageBox.Show("Промах");
+                pressedButton.BackgroundImage = ResourceImages.missed_cell_for_SWV2;
+            }
+
+            pressedButton.Enabled = false;
+            pressedButton.Click -= new EventHandler(PlayerHit);
         }
 
         /// <summary>
@@ -431,12 +493,12 @@ namespace Pr29
         /// <param name="button">Позиция кнопки</param>
         /// <param name="indexI">Выходной параметр. Позиция кнопки в первом измерении.</param>
         /// <param name="indexJ">Выходной параметр. Позиция кнопки в второй измерении.</param>
-        private void GetIndexButton(Point button, out int indexI, out int indexJ)
+        protected virtual void GetIndexButton(Point button, out int indexI, out int indexJ)
         {
             //if (!forPlayer) // Если поле принадлежит боту (расположено справо).
             //{
                 //button.X = 1167 + 54 - button.X;
-            //    button.X -= 613;
+                button.X -= 613;
             //}
 
             indexI = button.X / CELL_SIZE - 1;

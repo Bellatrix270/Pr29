@@ -293,6 +293,16 @@ namespace Pr29 {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Ship1V2_for_SeaWars {
+            get {
+                object obj = ResourceManager.GetObject("Ship1V2_for_SeaWars", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Ship2_for_SeaWars {
             get {
                 object obj = ResourceManager.GetObject("Ship2_for_SeaWars", resourceCulture);
