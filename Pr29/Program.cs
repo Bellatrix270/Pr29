@@ -16,7 +16,7 @@ namespace Pr29
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SeaWarsForm());
+            Application.Run(new AuthorizationForm());
         }
     }
 }

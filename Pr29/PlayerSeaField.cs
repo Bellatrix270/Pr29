@@ -162,7 +162,7 @@ namespace Pr29
             }
         }
 
-        public override void AvtoPlaceShips(Point indent)
+        public override void AvtoPlaceShips()
         {
             //foreach (PictureBoxExtender Ship in Ships)
             //{
@@ -178,7 +178,7 @@ namespace Pr29
                 Ships[i].BringToFront();
             }
 
-            base.AvtoPlaceShips(indent);
+            base.AvtoPlaceShips();
         }
 
         public void RestoreBackgroundImageField()
@@ -249,7 +249,7 @@ namespace Pr29
 
         protected override void GetIndexButton(Point button, out int indexI, out int indexJ)
         {
-            indexI = button.X / CELL_SIZE - 1;
+            indexI = button.X / CELL_SIZE - 1; // (21 = x / 2 - 1) => (21 + 1 = x / 2) => (posX = (indexI - 1) * CELL_SIZE)
             indexJ = button.Y / CELL_SIZE;
         }
     }

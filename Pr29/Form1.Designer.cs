@@ -34,6 +34,7 @@
             this.label_arrow_right = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.yt_Button1 = new yt_DesignUI.yt_Button();
             this.SuspendLayout();
             // 
             // label1
@@ -41,11 +42,11 @@
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Exo 2", 54F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 54F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.label1.Location = new System.Drawing.Point(406, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(461, 87);
+            this.label1.Size = new System.Drawing.Size(445, 82);
             this.label1.TabIndex = 0;
             this.label1.Text = "Выбор игры";
             // 
@@ -53,7 +54,7 @@
             // 
             this.label_gameName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label_gameName.BackColor = System.Drawing.Color.Transparent;
-            this.label_gameName.Font = new System.Drawing.Font("Exo 2", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_gameName.Font = new System.Drawing.Font("Microsoft Sans Serif", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label_gameName.ForeColor = System.Drawing.SystemColors.ControlLight;
             this.label_gameName.Location = new System.Drawing.Point(515, 309);
             this.label_gameName.Name = "label_gameName";
@@ -66,11 +67,11 @@
             // 
             this.label_arrow_left.AutoSize = true;
             this.label_arrow_left.BackColor = System.Drawing.Color.Transparent;
-            this.label_arrow_left.Font = new System.Drawing.Font("Molot", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_arrow_left.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label_arrow_left.ForeColor = System.Drawing.Color.LightGray;
             this.label_arrow_left.Location = new System.Drawing.Point(441, 300);
             this.label_arrow_left.Name = "label_arrow_left";
-            this.label_arrow_left.Size = new System.Drawing.Size(43, 55);
+            this.label_arrow_left.Size = new System.Drawing.Size(52, 55);
             this.label_arrow_left.TabIndex = 2;
             this.label_arrow_left.Text = "<";
             this.label_arrow_left.Click += new System.EventHandler(this.label_arrow_left_Click);
@@ -81,11 +82,11 @@
             // 
             this.label_arrow_right.AutoSize = true;
             this.label_arrow_right.BackColor = System.Drawing.Color.Transparent;
-            this.label_arrow_right.Font = new System.Drawing.Font("Molot", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_arrow_right.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label_arrow_right.ForeColor = System.Drawing.Color.LightGray;
             this.label_arrow_right.Location = new System.Drawing.Point(777, 300);
             this.label_arrow_right.Name = "label_arrow_right";
-            this.label_arrow_right.Size = new System.Drawing.Size(44, 55);
+            this.label_arrow_right.Size = new System.Drawing.Size(52, 55);
             this.label_arrow_right.TabIndex = 3;
             this.label_arrow_right.Text = ">";
             this.label_arrow_right.Click += new System.EventHandler(this.label_arrow_right_Click);
@@ -101,7 +102,7 @@
             this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Exo 2", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 21F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button1.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.button1.Location = new System.Drawing.Point(508, 569);
             this.button1.Name = "button1";
@@ -126,6 +127,27 @@
             this.button2.TabIndex = 5;
             this.button2.UseVisualStyleBackColor = false;
             // 
+            // yt_Button1
+            // 
+            this.yt_Button1.BackColor = System.Drawing.Color.DarkGray;
+            this.yt_Button1.BackColorAdditional = System.Drawing.Color.Gray;
+            this.yt_Button1.BackColorGradientEnabled = true;
+            this.yt_Button1.BackColorGradientMode = System.Drawing.Drawing2D.LinearGradientMode.BackwardDiagonal;
+            this.yt_Button1.BorderColor = System.Drawing.Color.Tomato;
+            this.yt_Button1.BorderColorEnabled = false;
+            this.yt_Button1.BorderColorOnHover = System.Drawing.Color.Tomato;
+            this.yt_Button1.BorderColorOnHoverEnabled = false;
+            this.yt_Button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.yt_Button1.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.yt_Button1.ForeColor = System.Drawing.Color.White;
+            this.yt_Button1.Location = new System.Drawing.Point(523, 511);
+            this.yt_Button1.Name = "yt_Button1";
+            this.yt_Button1.Rounding = 75;
+            this.yt_Button1.RoundingEnable = true;
+            this.yt_Button1.Size = new System.Drawing.Size(204, 52);
+            this.yt_Button1.TabIndex = 6;
+            this.yt_Button1.Text = "Hi";
+            // 
             // SelectGameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -134,6 +156,7 @@
             this.BackgroundImage = global::Pr29.ResourceImages.Background_For_WFV2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.yt_Button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label_arrow_right);
@@ -159,6 +182,7 @@
         private System.Windows.Forms.Label label_arrow_right;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private yt_DesignUI.yt_Button yt_Button1;
     }
 }
 

@@ -16,9 +16,9 @@ namespace Pr29
     {
         protected int mapSize;
         public bool[,] IsShipOnCell { get; protected set; } // Двумерных массив, представляющий собой данные о расположении короблей.
-        protected const int CELL_SIZE = 54;
+        public const int CELL_SIZE = 54;
         protected Control panel;
-        public Button[,] ButtonsCell;
+        public Button[,] ButtonsCell { get; protected set; }
         protected List<Point> FreeButtonsLocation = new List<Point>(); 
 
         ListBox console;
@@ -141,7 +141,7 @@ namespace Pr29
             console.Items.Add($"{indexI};{indexJ}");
         }
 
-        public virtual void AvtoPlaceShips(Point indent)
+        public virtual void AvtoPlaceShips()
         {
             for (int i = 0; i < Ships.Length; i++)
             {
@@ -203,7 +203,8 @@ namespace Pr29
         /// <summary>
         /// Активирует ячейки поля, добавляя событие для клика по клетке.
         /// </summary>
-        public void ActivateButtonsCell()
+        /// <param name="PlayerHit">Событие, происходящие при нажатии на ячейку поля бота.</param>
+        public void ActivateButtonsCell(EventHandler PlayerHit)
         {
             for (int i = 0; i < mapSize; i++)
                 for (int j = 0; j < mapSize; j++)
@@ -212,27 +213,6 @@ namespace Pr29
                     ButtonsCell[i, j].Enabled = true;
                     ButtonsCell[i, j].Click += new EventHandler(PlayerHit);
                 }
-        }
-
-        private void PlayerHit(object sender, EventArgs e)
-        {
-            Button pressedButton = sender as Button;
-            int index_i = (pressedButton.Location.X - 600) / CELL_SIZE - 1;
-            int index_j = pressedButton.Location.Y / CELL_SIZE;
-
-            if (IsShipOnCell[index_i, index_j])
-            {
-                MessageBox.Show("Есть попадание");
-                pressedButton.BackgroundImage = ResourceImages.hit_cell_for_SWV2;
-            }
-            else
-            {
-                MessageBox.Show("Промах");
-                pressedButton.BackgroundImage = ResourceImages.missed_cell_for_SWV2;
-            }
-
-            pressedButton.Enabled = false;
-            pressedButton.Click -= new EventHandler(PlayerHit);
         }
 
         /// <summary>
@@ -285,7 +265,7 @@ namespace Pr29
         /// </summary>
         /// <param name="cell">Начальная точка коробля.</param>
         /// <returns>Возвращяет true, если коробль можно расположить хотябы в одном направлении, в противном случае - false.</returns>
-        public bool IsEmptyCellsAround(Point cell, int ShipSize)
+        protected bool IsEmptyCellsAround(Point cell, int ShipSize)
         {
             bool isEmptyLeft = false;
             bool isEmptyRight = false;
@@ -314,7 +294,7 @@ namespace Pr29
         /// </summary>
         /// <param name="startCellShipPlaced">Точка от которой считается начальное расположение коробля.</param>
         /// <returns>Возвращает true, если по направлению расположения коробля есть пустые ячейки, и он может их занять.</returns>
-        public bool IsEmptyCellOnDerection(Point startCellShipPlaced, int ShipRotation, int ShipSize)
+        protected bool IsEmptyCellOnDerection(Point startCellShipPlaced, int ShipRotation, int ShipSize)
         {
             bool IsEmpty = false; // Флаг состояния ячеек.
             int CountCellForChecking = ShipSize - 1; // Колличество ячеек для проверки, не включая текущую.
@@ -371,7 +351,7 @@ namespace Pr29
         /// <param name="ShipRotation"></param>
         /// <param name="ShipSize"></param>
         /// <returns>Значение true, если корабль выходит за границы поля.</returns>
-        public bool IsLeaveField(Point startCellShipPlaced, int ShipRotation, int ShipSize)
+        protected bool IsLeaveField(Point startCellShipPlaced, int ShipRotation, int ShipSize)
         {
             bool isLeaveField = false;
             int CountCellForChecking = ShipSize - 1; // Колличество ячеек для проверки, не включая текущую.
@@ -407,7 +387,7 @@ namespace Pr29
         /// <param name="ShipRotation"></param>
         /// <param name="ShipSize"></param>
         /// <returns>Новые координаты стартовой точки</returns>
-        public Point SearchEmptyPoint(ref int ShipRotation, int ShipSize)
+        protected Point SearchEmptyPoint(ref int ShipRotation, int ShipSize)
         {
 
             Point newPoint = FreeButtonsLocation.ElementAt(new Random().Next(0, FreeButtonsLocation.Count));
@@ -433,7 +413,7 @@ namespace Pr29
         /// <param name="ShipSize"></param>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        public void FindAnchorPoints(Point currentPoint, int ShipRotation, int ShipSize, out Point start, out Point end)
+        protected void FindAnchorPoints(Point currentPoint, int ShipRotation, int ShipSize, out Point start, out Point end)
         {
             #region SearchStartPoint
             if (ShipRotation == 0 || ShipRotation == 90)
@@ -464,7 +444,7 @@ namespace Pr29
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
-        public void FillAnchorPoints(Point start, Point end)
+        protected void FillAnchorPoints(Point start, Point end)
         {
             GetIndexButton(start, out int startIndexI, out int startIndexJ);
             GetIndexButton(end, out int endIndexI, out int endIndexJ);
@@ -495,15 +475,10 @@ namespace Pr29
         /// <param name="indexJ">Выходной параметр. Позиция кнопки в второй измерении.</param>
         protected virtual void GetIndexButton(Point button, out int indexI, out int indexJ)
         {
-            //if (!forPlayer) // Если поле принадлежит боту (расположено справо).
-            //{
-                //button.X = 1167 + 54 - button.X;
-                button.X -= 613;
-            //}
+            button.X -= 613;
 
             indexI = button.X / CELL_SIZE - 1;
             indexJ = button.Y / CELL_SIZE;
-
         }
     }
 }

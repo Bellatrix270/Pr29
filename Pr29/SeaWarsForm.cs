@@ -33,11 +33,13 @@ namespace Pr29
         int CountRotation;
         Point cell;
 
-        PlayerSeaField playerField;
+        Player Player;
+        Bot Bot;
 
         public SeaWarsForm()
         {
             InitializeComponent();
+            Bot = new Bot(MainPanel, listBox1, Difficult.normal);
 
             KeyUp += new KeyEventHandler(KeyRotate);
 
@@ -51,8 +53,7 @@ namespace Pr29
             };
             MainPanel.Controls.Add(PictureBox_AnyShip);
 
-            playerField = new PlayerSeaField(10, PlayerField_panel, PlayerShips_panel, PictureBox_SelectedShip);
-            playerField.CreateMap();
+            Player = new Player(PlayerField_panel, PlayerShips_panel, SelectedImg, Bot);
 
         }
 
@@ -115,7 +116,7 @@ namespace Pr29
                     #endregion
 
                     #region restore background image cell
-                    playerField.RestoreBackgroundImageField();
+                    Player.RestoreBackgroundCells();
                     #endregion
 
                     #region initialization bot
@@ -125,8 +126,8 @@ namespace Pr29
                     //    botShips[i] = (PictureBoxExtender)Ships[i].Clone();
                     //    panel1.Controls.Add(botShips[i]);
                     //}
-                    Bot bot = new Bot(MainPanel, listBox1, playerField);
-                    bot.Shot();
+                    Bot.Initialize(Player);
+                    Bot.Shot();
                     //playerField[0,0];
                     #endregion
                 }
@@ -140,7 +141,7 @@ namespace Pr29
 
         private void button_avtoGenerate_Click(object sender, EventArgs e)
         {
-            playerField.AvtoPlaceShips(new Point(54,54));
+            Player.AvtoPlaceShips();
             ShipCount = 0;
         }
 
